@@ -1,5 +1,7 @@
 <?php
 
+echo 'test2';
+/*
 require __DIR__.'/vendor/autoload.php';
 
 // Подключение библиотеки
@@ -11,3 +13,17 @@ $a->parse($argv);// Получение входных данных
 if($a->hasErrors()) $a->echoR($a->getErrors());
 
 $a->handle();// Выполнить команду
+*/
+require __DIR__.'/vendor/autoload.php';
+
+$app = new app\Application;
+
+$app->define();     // Загружаем константы? Создаем контейнер?
+
+$request = $app->getRequest();  // Получаем запрос
+
+$response = $app->handle($request); // Запрос должен передоваться сначала в роут, затем в контроллер
+
+$app->end($request, $response);   //Отправляем ответ
+
+?>

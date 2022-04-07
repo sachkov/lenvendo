@@ -1,0 +1,42 @@
+version: "3"
+services:
+    web:
+        build: 
+            context: .
+            dockerfile: web.Dockerfile
+        ports:
+            - "$HTTP_PORT_BACK:80"
+        tty: 
+            true
+        networks:
+            net:
+        depends_on:
+            - app
+        volumes:
+            - ../:/var/www/html
+        container_name: len_web
+    app:
+        build: 
+            context: ../
+            dockerfile: docker/app.Dockerfile
+        tty: 
+            true
+        environment:
+            # Ключ приложения
+            APP_KEY: $APP_KEY
+            APP_ENV: $APP_ENV
+
+        networks:
+            net:
+        volumes:
+            - ../:/var/www/html
+        container_name: len_app
+
+networks:
+    net:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                -
+                    subnet: $NETWORK

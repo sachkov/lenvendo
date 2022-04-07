@@ -1,7 +1,7 @@
 {
     "name": "sachkov/lenvendo",
     "require": {
-        "php": "^7.4",
+        "php": "^8.1",
         "sachkov/lenvendoconsolelib": "*"
     },
     "autoload": {
