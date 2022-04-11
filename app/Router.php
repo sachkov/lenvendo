@@ -1,6 +1,6 @@
 <?php
-namespace app;
-use app\Http;
+namespace App;
+use App\Http;
 
 
 class Router
@@ -9,7 +9,9 @@ class Router
     {
         $response = new Http\Response;
 
-        $response->setContent('<pre>'.print_r($request->get('query')).'</pre>');
+        $response->setContent('<pre>'.print_r($request->get('query'),1).'</pre>');
+
+        $response->setContent('<pre>'.getenv('APP_KEY').'</pre>');
 
         return $response;
     }

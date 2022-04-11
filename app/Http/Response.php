@@ -1,5 +1,5 @@
 <?php
-namespace app\Http;
+namespace App\Http;
 
 class Response
 {
@@ -20,7 +20,7 @@ class Response
 
     public function setContent(string $content)
     {
-        $this->content = $content;
+        $this->content .= $content;
         return $this;
     }
 }

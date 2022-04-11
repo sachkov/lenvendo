@@ -16,7 +16,7 @@ $a->handle();// Выполнить команду
 */
 require __DIR__.'/vendor/autoload.php';
 
-$app = new app\Application;
+$app = new App\Application;
 
 $app->define();     // Загружаем константы? Создаем контейнер?
 
