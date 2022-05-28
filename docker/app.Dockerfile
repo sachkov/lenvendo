@@ -42,7 +42,7 @@ RUN \
     docker-php-ext-install \
         pgsql \
         pdo \
-        pdo_pgsql \
+        pdo_mysql \
         opcache \
         zip \
         bz2 \

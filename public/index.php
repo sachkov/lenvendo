@@ -14,7 +14,7 @@ if($a->hasErrors()) $a->echoR($a->getErrors());
 
 $a->handle();// Выполнить команду
 */
-require __DIR__.'/vendor/autoload.php';
+require __DIR__.'./../vendor/autoload.php';
 
 $app = new App\Application;
 

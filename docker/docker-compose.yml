@@ -14,7 +14,6 @@ services:
             - app
         volumes:
             - ../:/var/www/html
-        restart: always
         container_name: len_web
     app:
         build: 
@@ -26,17 +25,19 @@ services:
             # Ключ приложения
             APP_KEY: $APP_KEY
             APP_ENV: $APP_ENV
+            MYSQL_DATABASE: $MYSQL_DATABASE
+            MYSQL_USER: $MYSQL_USER
+            MYSQL_PASSWORD: $MYSQL_PASSWORD
 
         networks:
             net:
         volumes:
             - ../:/var/www/html
-        restart: always
         container_name: len_app
     db:
         image: mysql:8.0
         ports:
-            - "$DB_PORT:5432"
+            - "$DB_PORT:3306"
         environment:
             MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
             MYSQL_DATABASE: $MYSQL_DATABASE
@@ -45,10 +46,10 @@ services:
         networks:
             net:
         volumes:
-           - ./storage/mysql:/var/lib/mysql
-        restart: always
+           - db_len_volume:/var/lib/mysql
         container_name: len_db
-
+volumes:
+    db_len_volume:
 networks:
     net:
         driver: bridge
