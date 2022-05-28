@@ -4,6 +4,7 @@ namespace App\Http;
 class Response
 {
     protected $content = "";
+    protected $statusCode;
     protected $error = "";
 
     protected $statusTexts = [
@@ -78,7 +79,7 @@ class Response
         }
 
         $header = 'HTTP/1.1 200 OK';
-        if($this->code){
+        if($this->statusCode){
             $statusText = isset($this->statusTexts[$this->statusCode])
                 ? $this->statusTexts[$this->statusCode]
                 : '';
