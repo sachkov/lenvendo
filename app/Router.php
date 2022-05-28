@@ -6,7 +6,7 @@ use App\Http;
 class Router
 {
     private $defaultControllerFolder = 'App\\Controller\\';
-    private $defaultControllerName = 'App\\Controller\\Unexpected';
+    private $defaultControllerName = 'Common';
     private $request;
 
     public function handle(Http\Request $request):Http\Response
@@ -15,18 +15,18 @@ class Router
 
         $controller = $this->getController($request->get('path'));
 
-        $response = $controller->handle();
+        return $controller->execute();
 
-        $response->setContent('GET:<pre>'.print_r($request->get('query'),1).'</pre></br>');
-        $response->setContent('POST:<pre>'.print_r($request->get('request'),1).'</pre></br>');
-        $response->setContent('COOKIE:<pre>'.print_r($request->get('cookies'),1).'</pre></br>');
-        $response->setContent('SERVER:<pre>'.print_r($request->get('paramenters'),1).'</pre></br>');
+        //echo '<br><pre>'.print_r($controller,1).'</pre><br>';
 
-        $response->setContent('PATH:<pre>'.$request->get('path').'</pre></br>');
+        // $response->setContent('GET:<pre>'.print_r($request->get('query'),1).'</pre></br>');
+        // $response->setContent('POST:<pre>'.print_r($request->get('request'),1).'</pre></br>');
+        // $response->setContent('COOKIE:<pre>'.print_r($request->get('cookies'),1).'</pre></br>');
+        // $response->setContent('SERVER:<pre>'.print_r($request->get('paramenters'),1).'</pre></br>');
 
-        $response->setContent('Controller:<pre>'.get_class($controller).'</pre></br>');
+        // $response->setContent('PATH:<pre>'.$request->get('path').'</pre></br>');
 
-        return $response;
+        // $response->setContent('Controller:<pre>'.get_class($controller).'</pre></br>');
     }
 
     private function getController(string $path)
@@ -45,7 +45,7 @@ class Router
                 return new $clName($this->request);
         }
 
-        $class = $this->defaultControllerName;
+        $class = $this->defaultControllerFolder.$this->defaultControllerName;
 
         return new $class($this->request);
 
