@@ -14,9 +14,9 @@ if($a->hasErrors()) $a->echoR($a->getErrors());
 
 $a->handle();// Выполнить команду
 */
-require __DIR__.'/vendor/autoload.php';
+require __DIR__.'./../vendor/autoload.php';
 
-$app = new app\Application;
+$app = new App\Application;
 
 $app->define();     // Загружаем константы? Создаем контейнер?
 

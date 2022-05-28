@@ -1,6 +1,6 @@
 <?php
-namespace app;
-use app\Http;
+namespace App;
+use App\Http;
 
 
 class Application
