@@ -20,8 +20,20 @@ class Request
 
     public function get(string $name)
     {
-        if(isset($this->$name)) return $this->$name;
-        return [];
+        if(!$name || !isset($this->$name)) return [];
+
+        return $this->$name;
+    }
+
+    public function getKey(string $name, $key)
+    {
+        $input = $this->get($name);
+
+        if(empty($input)) return null;
+
+        if(!isset($key) || !isset($input[$key])) return null;
+        
+        return $input[$key];
     }
 
     public function getHttpMethod():string
