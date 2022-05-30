@@ -16,17 +16,6 @@ class Router
         $controller = $this->getController($request->get('path'));
 
         return $controller->execute();
-
-        //echo '<br><pre>'.print_r($controller,1).'</pre><br>';
-
-        // $response->setContent('GET:<pre>'.print_r($request->get('query'),1).'</pre></br>');
-        // $response->setContent('POST:<pre>'.print_r($request->get('request'),1).'</pre></br>');
-        // $response->setContent('COOKIE:<pre>'.print_r($request->get('cookies'),1).'</pre></br>');
-        // $response->setContent('SERVER:<pre>'.print_r($request->get('paramenters'),1).'</pre></br>');
-
-        // $response->setContent('PATH:<pre>'.$request->get('path').'</pre></br>');
-
-        // $response->setContent('Controller:<pre>'.get_class($controller).'</pre></br>');
     }
 
     private function getController(string $path)

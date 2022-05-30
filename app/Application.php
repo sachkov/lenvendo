@@ -6,9 +6,28 @@ use App\Http;
 class Application
 {
     /**
+     * Запуск приложения
+     */
+    public function run():void
+    {
+        try{
+            $request = $this->getRequest();  // Получаем запрос
+
+            $this->define();     // Загружаем константы? Создаем контейнер?
+
+            $response = $this->handle($request); // Запрос должен передоваться сначала в роут, затем в контроллер
+
+        }catch(\Exception $e){
+            $response->setContent('Exception:<pre>'.$e->getMessage().'</pre></br>');
+        }finally{
+            $this->end($request, $response);   //Отправляем ответ
+        }
+    }
+
+    /**
      * Оприделение переменных окружения и констант приложения, получение сервис-контейнера
      */
-    public function define()
+    protected function define()
     {
 
     }
@@ -16,7 +35,7 @@ class Application
     /**
      * Получение данных http запроса
      */
-    public function getRequest():Http\Request
+    protected function getRequest():Http\Request
     {
         return new Http\Request;
     }
@@ -24,7 +43,7 @@ class Application
     /**
      * Обработка запроса - передача его в контроллер через роутер
      */
-    public function handle(Http\Request $request):Http\Response
+    protected function handle(Http\Request $request):Http\Response
     {
         $router = new Router;
 
@@ -36,7 +55,7 @@ class Application
     /**
      * Отправка ответа
      */
-    public function end(Http\Request $request, Http\Response $response)
+    protected function end(Http\Request $request, Http\Response $response)
     {
         $response->send();
     }
