@@ -30,6 +30,7 @@ class Router
                 $clName .= $this->realName($path);
             }
             $clName = $this->defaultControllerFolder.$clName;
+
             if(class_exists($clName)) 
                 return new $clName($this->request);
         }
