@@ -43,12 +43,13 @@ class Request
 
     protected function preparePathInfo()
     {
+        $this->path = '/';
+
         if(isset($this->parameters['REQUEST_URI']) 
             && $this->parameters['REQUEST_URI'] != ''
             && $this->parameters['REQUEST_URI'] != '/'
         ){
             $this->path = parse_url($this->parameters['REQUEST_URI'], PHP_URL_PATH);
         }
-        $this->path = '/';
     }
 }

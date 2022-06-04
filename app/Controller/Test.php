@@ -38,4 +38,9 @@ class Test extends Common
 
         return $this->response;
     }
+
+    protected function GET():Http\Response
+    {
+        return $this->response->setContent('testtest!');
+    }
 }
