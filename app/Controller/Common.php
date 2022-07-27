@@ -56,21 +56,21 @@ class Common
 
     protected function GET():Http\Response
     {
-        return $this->response->setError(501);
+        return $this->response->setError(502);
     }
 
     protected function PUT():Http\Response
     {
-        return $this->response->setError(501);
+        return $this->response->setError(503);
     }
 
     protected function PATCH():Http\Response
     {
-        return $this->response->setError(501);
+        return $this->response->setError(504);
     }
 
     protected function DELETE():Http\Response
     {
-        return $this->response->setError(501);
+        return $this->response->setError(505);
     }
 }

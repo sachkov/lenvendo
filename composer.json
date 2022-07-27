@@ -2,7 +2,9 @@
     "name": "sachkov/lenvendo",
     "require": {
         "php": ">7.4",
-        "sachkov/lenvendoconsolelib": "*"
+        "sachkov/lenvendoconsolelib": "*",
+        "psr/container": "^2.0",
+        "doctrine/dbal": "^3.3"
     },
     "autoload": {
         "psr-4": {

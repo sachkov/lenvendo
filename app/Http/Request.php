@@ -7,7 +7,8 @@ class Request
     private $request=[];
     private $cookies=[];
     private $parameters=[];
-    private $path='';
+    private $path='/';
+    private $user;
 
     public function __construct()
     {
@@ -29,6 +30,11 @@ class Request
         return strtoupper($this->parameters['REQUEST_METHOD']?:'GET');
     }
 
+    public function setUser(array $user)
+    {
+        $this->user = $user;
+    }
+
     protected function preparePathInfo()
     {
         if(isset($this->parameters['REQUEST_URI']) 
@@ -37,6 +43,5 @@ class Request
         ){
             $this->path = parse_url($this->parameters['REQUEST_URI'], PHP_URL_PATH);
         }
-        $this->path = '/';
     }
 }

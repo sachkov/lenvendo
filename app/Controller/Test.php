@@ -5,6 +5,8 @@ use App\Http;
 
 class Test extends Common
 {
+    protected $middlewareCommon = ['auth'];
+    
     public function handle():Http\Response
     {
         $host = '192.168.1.7';
@@ -35,6 +37,51 @@ class Test extends Common
             }
         }
         
+
+        return $this->response;
+    }
+
+    protected function GET():Http\Response
+    {
+        $this->response->setContent(getenv('MYSQL_USER'));
+
+        $reflector = new \ReflectionClass(Common::class);
+
+        $constructor = $reflector->getConstructor();
+
+        if(is_null($constructor)) $this->response->setContent('constructor is null.'.PHP_EOL);
+
+        $parameters = $constructor->getParameters();
+
+        $this->response->setContent(print_r($parameters,1));
+
+        foreach ($parameters as $parameter) {
+			// get the type hinted class
+			$dependency = $parameter->getClass();
+			if ($dependency === NULL) {
+				$this->response->setContent($parameter->name.' NO dependency.'.PHP_EOL);
+			} else {
+				// get dependency resolved
+				$this->response->setContent(print_r($dependency,1).PHP_EOL);
+			}
+		}
+
+        $this->response->setContent('<br>');
+
+        $this->response->setContent(print_r(\App\Application::$container,1));
+
+        $sql = "SHOW TABLES";
+        $stmt = \App\Application::$db->query($sql);
+
+        while (($row = $stmt->fetchAssociative()) !== false) {
+            $q[] = $row;
+        }
+
+        $this->response->setContent('<br>');
+
+        $this->response->setContent(print_r($q,1));
+
+        $this->response->setContent('<br><br>');
 
         return $this->response;
     }

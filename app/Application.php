@@ -5,12 +5,35 @@ use App\Http;
 
 class Application
 {
+    public static $container;
+    public static $db;
+
+    public function __construct()
+    {
+        $container = new Container;
+
+        $config = require __DIR__ . '/config/main.php';
+
+        $container->set($config);
+
+        self::$container = $container;
+
+        $this->boot();
+    }
     /**
      * Оприделение переменных окружения и констант приложения, получение сервис-контейнера
      */
-    public function define()
+    public function boot()
     {
-
+        $connectionParams = [
+            'dbname' => getenv('MYSQL_DATABASE'),
+            'user' => getenv('MYSQL_USER'),
+            'password' => getenv('MYSQL_PASSWORD'),
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql',
+        ];
+        self::$db = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
+        
     }
 
     /**
@@ -18,7 +41,7 @@ class Application
      */
     public function getRequest():Http\Request
     {
-        return new Http\Request;
+        return self::$container->get(Http\Request::class);
     }
 
     /**
@@ -26,7 +49,7 @@ class Application
      */
     public function handle(Http\Request $request):Http\Response
     {
-        $router = new Router;
+        $router = self::$container->get(Router::class);
 
         $response = $router->handle($request);
 
