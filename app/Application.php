@@ -29,11 +29,21 @@ class Application
             'dbname' => getenv('MYSQL_DATABASE'),
             'user' => getenv('MYSQL_USER'),
             'password' => getenv('MYSQL_PASSWORD'),
-            'host' => 'localhost',
+            'port' => '3307',
+            'host' => '192.168.223.80',
             'driver' => 'pdo_mysql',
+            'charset' => 'utf8'
         ];
-        self::$db = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
-        
+
+        try {
+            $conf = new \Doctrine\DBAL\Configuration();
+
+            $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $conf);
+            $conn->connect();
+            self::$db = $conn;
+        } catch (\Exception $e) {
+            echo 'connection fail '.$e->getMessage().'<br>';
+        }
     }
 
     /**

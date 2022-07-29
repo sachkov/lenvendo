@@ -27,7 +27,7 @@ class Common
     public function __construct(Http\Request $request)
     {
         $this->request = $request;
-        $this->response = new Http\Response;
+        $this->response = \App\Application::$container->get(Http\Response::class);
     }
 
     public function execute():Http\Response
@@ -35,7 +35,7 @@ class Common
         $method = $this->request->getHttpMethod();
 
         if(!method_exists($this, $method)){
-            return $this->response->setError(501);
+            return $this->response->setError(404);
         }
 
         $middleware = $this->middlewareCommon;
@@ -51,26 +51,26 @@ class Common
 
     protected function POST():Http\Response
     {
-        return $this->response->setError(501);
+        return $this->response->setError(404);
     }
 
     protected function GET():Http\Response
     {
-        return $this->response->setError(502);
+        return $this->response->setError(404);
     }
 
     protected function PUT():Http\Response
     {
-        return $this->response->setError(503);
+        return $this->response->setError(404);
     }
 
     protected function PATCH():Http\Response
     {
-        return $this->response->setError(504);
+        return $this->response->setError(404);
     }
 
     protected function DELETE():Http\Response
     {
-        return $this->response->setError(505);
+        return $this->response->setError(404);
     }
 }

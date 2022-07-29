@@ -7,6 +7,7 @@ class Router
 {
     private $defaultControllerFolder = 'App\\Controller\\';
     private $defaultControllerName = 'Common';
+    private $firstPageController = 'FirstPage';
     private $request;
 
     public function handle(Http\Request $request):Http\Response
@@ -20,23 +21,31 @@ class Router
 
     private function getController(string $path)
     {
-        if(strpos($path, '/') !== false){
-            $clName = str_replace('/','\\',$path);
-            $arPath = explode('\\',$clName);
-            $clName = '';
-            foreach($arPath as $path){
-                if(!$path) continue;
-                if($clName) $clName .= '\\';
-                $clName .= $this->realName($path);
-            }
-            $clName = $this->defaultControllerFolder.$clName;
-            if(class_exists($clName))
-                return new $clName($this->request);
+        $clName = $this->defaultControllerName;
+
+        if($path == '/') $clName = $this->firstPageController;
+        
+        if(strpos($path, '/') !== false)
+            $clName = $this->getClassName($path);
+
+        $class = $this->defaultControllerFolder.$clName;
+        if(class_exists($class))
+            return new $class($this->request);
+        else 
+            throw new \Exception("Can't find class for path:'".$path."'");
+    }
+
+    private function getClassName(string $path):string
+    {
+        $clName = str_replace('/','\\',$path);
+        $arPath = explode('\\',$clName);
+        $clName = '';
+        foreach($arPath as $path){
+            if(!$path) continue;
+            if($clName) $clName .= '\\';
+            $clName .= $this->realName($path);
         }
-
-        $class = $this->defaultControllerFolder.$this->defaultControllerName;
-
-        return new $class($this->request);
+        return $clName;
     }
 
     private function realName(string $name):string

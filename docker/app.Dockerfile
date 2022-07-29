@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.0-fpm
 
 RUN \
     apt-get update && apt-get install -y \
@@ -53,21 +53,8 @@ RUN \
 
 COPY ./docker/conf/php.app/php.ini /usr/local/etc/php/conf.d/php.ini
 COPY ./docker/conf/supervisor /etc/supervisor
-#COPY ./docker/instances/marketplace_workcopy/etc/timezone /etc/timezone
 COPY ./ /var/www/html
-#COPY ./docker/instances/marketplace_workcopy/bin/app.sh /app.sh
-#COPY ./docker/instances/marketplace_workcopy/bin/composer_update.sh /composer_update.sh
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install
 
-#RUN cd /var/www/html \
-#    && echo pwd: `pwd` && echo ls: `ls`
-
-#RUN \
-#    export COMPOSER_MEMORY_LIMIT=-1 \
-#    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-#    && php -d memory_limit=-1 composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-#    && php -r "unlink('composer-setup.php');" \
-#    && cd /var/www/html  \
-#    && composer install

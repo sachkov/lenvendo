@@ -4,7 +4,8 @@
         "php": ">7.4",
         "sachkov/lenvendoconsolelib": "*",
         "psr/container": "^2.0",
-        "doctrine/dbal": "^3.3"
+        "doctrine/dbal": "^3.3",
+        "symfony/console": "^5.4"
     },
     "autoload": {
         "psr-4": {
