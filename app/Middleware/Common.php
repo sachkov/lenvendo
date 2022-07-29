@@ -24,7 +24,6 @@ class Common
                 (new $class($this->request, $this->response))->handle();
             }
         }
-        
     }
 
 }

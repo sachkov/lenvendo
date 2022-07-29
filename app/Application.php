@@ -20,6 +20,7 @@ class Application
 
         $this->boot();
     }
+
     /**
      * Оприделение переменных окружения и констант приложения, получение сервис-контейнера
      */
@@ -49,7 +50,7 @@ class Application
     /**
      * Получение данных http запроса
      */
-    public function getRequest():Http\Request
+    protected function getRequest():Http\Request
     {
         return self::$container->get(Http\Request::class);
     }
@@ -57,7 +58,7 @@ class Application
     /**
      * Обработка запроса - передача его в контроллер через роутер
      */
-    public function handle(Http\Request $request):Http\Response
+    protected function handle(Http\Request $request):Http\Response
     {
         $router = self::$container->get(Router::class);
 
@@ -69,7 +70,7 @@ class Application
     /**
      * Отправка ответа
      */
-    public function end(Http\Request $request, Http\Response $response)
+    protected function end(Http\Request $request, Http\Response $response)
     {
         $response->send();
     }
