@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 use App\Http;
+use App\Service;
 
 
 class FirstPage extends Common
@@ -9,8 +10,35 @@ class FirstPage extends Common
     
     protected function GET():Http\Response
     {
+        $request = $this->request->get('query');
 
-        $this->response->setContent('<br><br>');
+        var_dump($request);
+        $data = [
+            'd'=>'demo', 
+            //'user'=>['login'=>'vasya'],
+            'request'=> $request,
+            'method'=> 'GET'
+        ];
+
+        $this->response->setTemplate('index',$data);
+
+        return $this->response;
+    }
+
+    protected function POST():Http\Response
+    {
+        $request = $this->request->get('request');
+
+        $user = \App\Application::$container->get(Service\User::class);
+
+        var_dump($request);
+        $data = [
+            'd'=>'demo', 
+            //'user'=>['login'=>'vasya'],
+            'method'=> 'POST'
+        ];
+
+        $this->response->setTemplate('index',$data);
 
         return $this->response;
     }

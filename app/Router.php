@@ -24,15 +24,14 @@ class Router
         $clName = $this->defaultControllerName;
 
         if($path == '/') $clName = $this->firstPageController;
-        
-        if(strpos($path, '/') !== false)
+        else if(strpos($path, '/') !== false )
             $clName = $this->getClassName($path);
 
         $class = $this->defaultControllerFolder.$clName;
         if(class_exists($class))
             return new $class($this->request);
         else 
-            throw new \Exception("Can't find class for path:'".$path."'");
+            throw new \Exception("Can't find class for path:'".$path."'. Class($class) not found. -".$clName."-");
     }
 
     private function getClassName(string $path):string

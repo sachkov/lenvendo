@@ -6,6 +6,9 @@ class Response
     protected $content = "";
     protected $statusCode;
     protected $error = "";
+    protected $template = "";
+    protected $templateData = [];
+    protected $twig;
 
     protected $statusTexts = [
         100 => 'Continue',
@@ -88,7 +91,11 @@ class Response
 
         header($header);
 
-        echo $this->content;
+        if(isset($this->twig)){
+            echo $this->renderTwig();
+        }else{
+            echo $this->content;
+        }
 
         return $this;
     }
@@ -104,5 +111,22 @@ class Response
         $this->statusCode = $code?:500;
         $this->content = $message;
         return $this;
+    }
+
+    public function setTemplate(string $name='index', array $data=[]):Response
+    {
+        $this->template = $name.".html.twig";
+
+        $this->templateData = $data;
+
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../templates');
+        $this->twig = new \Twig\Environment($loader);
+
+        return $this;
+    }
+
+    private function renderTwig()
+    {
+        return $this->twig->render($this->template,$this->templateData);
     }
 }
