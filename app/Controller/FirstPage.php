@@ -10,14 +10,8 @@ class FirstPage extends Common
     
     protected function GET():Http\Response
     {
-        $request = $this->request->get('query');
-
-        var_dump($request);
         $data = [
-            'd'=>'demo', 
-            //'user'=>['login'=>'vasya'],
-            'request'=> $request,
-            'method'=> 'GET'
+            'user'=>$this->request->get('user')
         ];
 
         $this->response->setTemplate('index',$data);
@@ -31,11 +25,10 @@ class FirstPage extends Common
 
         $user = \App\Application::$container->get(Service\User::class);
 
-        var_dump($request);
+        $login = $user->login($request);
+
         $data = [
-            'd'=>'demo', 
-            //'user'=>['login'=>'vasya'],
-            'method'=> 'POST'
+            'user'=>$login
         ];
 
         $this->response->setTemplate('index',$data);

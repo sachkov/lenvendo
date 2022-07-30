@@ -11,8 +11,12 @@
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-    {% if user %}
-    <p>{{ user.login }}</p>
+    {% if user.login and user.id %}
+      <span>user: </span><b>{{ user.login }}</b>
+      <form action="/" method="POST">
+        <input hidden name="loguot" value="true"> 
+        <button type="submit" class="btn btn-info">Logout</button>
+      </form>
     {% endif %}
     
     {% block body %}{% endblock %}

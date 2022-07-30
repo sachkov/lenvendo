@@ -42,7 +42,7 @@ class Request
         return strtoupper($this->parameters['REQUEST_METHOD']?:'GET');
     }
 
-    public function setUser(array $user)
+    public function setUser($user)
     {
         $this->user = $user;
     }

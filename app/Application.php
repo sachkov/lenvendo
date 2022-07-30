@@ -50,7 +50,7 @@ class Application
     /**
      * Получение данных http запроса
      */
-    protected function getRequest():Http\Request
+    public function getRequest():Http\Request
     {
         return self::$container->get(Http\Request::class);
     }
@@ -58,7 +58,7 @@ class Application
     /**
      * Обработка запроса - передача его в контроллер через роутер
      */
-    protected function handle(Http\Request $request):Http\Response
+    public function handle(Http\Request $request):Http\Response
     {
         $router = self::$container->get(Router::class);
 
@@ -70,7 +70,7 @@ class Application
     /**
      * Отправка ответа
      */
-    protected function end(Http\Request $request, Http\Response $response)
+    public function end(Http\Request $request, Http\Response $response)
     {
         $response->send();
     }

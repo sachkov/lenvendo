@@ -8,7 +8,7 @@ class AuthMiddleware extends Common
     {
         session_start();
 
-        if(isset($_SESSION['user'])){
+        if(isset($_SESSION['user']) && $_SESSION['user']){
             $this->request->setUser($_SESSION['user']);
         }
     }
