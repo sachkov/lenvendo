@@ -4,20 +4,24 @@
 
 {% block body %}
 
-{% if user is null%}
+{% if not user.id %}
     
-{{ method }}
 <div class="d-flex align-items-center w-100 vh-100">
     <div class="container-sm">
         <form action="/" method="POST">
             <legend>Sing in (no registartion needed.)</legend>
             <div class="mb-3">
                 <label for="loginInput" class="form-label">Login</label>
-                <input name="login" type="text" class="form-control" id="loginInput">
+                <input name="login" type="text" class="form-control" id="loginInput" 
+                    value="{{user.login}}">
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+                <input name="password" type="password" id="exampleInputPassword1"
+                    class="form-control {% if user.error %}is-invalid{% endif %}">
+                <div id="validation" class="invalid-feedback">
+                    {% if user.error %}{{user.error}}{% endif %}
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

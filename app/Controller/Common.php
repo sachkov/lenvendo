@@ -15,7 +15,7 @@ class Common
 {
     protected $request;
     protected $response;
-    protected $middlewareCommon = [];
+    protected $middlewareCommon = ['auth'];
     protected $middleware = [
         "POST"      => [],
         "GET"       => [],

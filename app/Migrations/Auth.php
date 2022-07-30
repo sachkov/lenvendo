@@ -36,7 +36,7 @@ class Auth
             CREATE TABLE IF NOT EXISTS `" . $table_name . "`(
                 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `login` CHAR(32) NOT NULL COMMENT 'Логин пользователя',
-                `password` VARCHAR(255) COMMENT 'хэш пароля',
+                `password` VARCHAR(255) NOT NULL COMMENT 'хэш пароля',
                 PRIMARY KEY `id`(`id`),
                 UNIQUE KEY `login`(`login`)
             )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
