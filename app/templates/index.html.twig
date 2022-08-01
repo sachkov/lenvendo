@@ -31,4 +31,21 @@
 
 {% endif %}
 
+{% if user.id %}
+
+    {% if prize.created_at %}
+
+        <h4>Вы уже принимали участие в розыгрыше {{prize.created_at}}</h4>
+        
+    {% endif %}
+
+    {% if not prize.created_at %}
+        <div class="d-flex align-items-center justify-content-center w-100 vh-100">
+            <form action="/prize_drawing" method="GET">
+                <button type="submit" class="btn btn-success btn-lg">Получить приз!</button>
+            </form>
+        </div>
+    {% endif %}
+{% endif %}
+
 {% endblock %}

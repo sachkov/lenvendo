@@ -43,4 +43,38 @@ class Winners extends Model\Common
         return $res; 
     }
 
+    /**
+     * Запись о призе который получил пользователь в розыгрыше
+     * @param int $userId - ИД пользователя
+     * @param int $drawId - ИД розыгрыша
+     * @return array|false - запись о призе или false
+     */
+    public function getPrize(int $userId, int $drawId)
+    {
+        if(!$userId || !$drawId) return false;
+
+        $db = $this->getDb();
+
+        $sql = "
+            SELECT $this->table.`created_at`, `prizes`.`name` FROM $this->table
+            LEFT JOIN `prizes`
+                ON $this->table.`prize_id` = `prizes`.`id`
+            WHERE $this->table.`user_id` = ?
+                AND $this->table.`draw_id` = ?
+            LIMIT 1
+        ";
+
+        $win = $db->fetchAssociative($sql,[$userId, $drawId]);
+
+        return $win;
+    }
+
+    /**
+     * Запись информации о призе
+     */
+    public function commit(array $user, array $prize)
+    {
+
+    }
+
 }

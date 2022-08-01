@@ -45,39 +45,6 @@ class PrizeDrawing extends Model\Common
     }
 
     /**
-     * Найти случайный приз (возможно перенести в сервис)
-     */
-    public function getRundomPrizeId()
-    {
-        $draw_id = $this->getActive();
-
-        if(!$draw_id){
-            return ['error'=>'No active drawing right now.'];
-        }
-
-        $prizes = $this->prizes->getPrizeValue($draw_id);
-
-        if(!isset($prizes['multiplexer']) || !$prizes['multiplexer']){
-            return $this->endDrawing($draw_id);
-        }
-
-        $max = $prizes['multiplexer'];
-
-        $win = random_int(0, $max);
-
-        $win_prize = 0;
-
-        foreach($prizes['prizes'] as $k=>$prize){
-            if($win >= $prize['mult_min'] && $win <= $prize['mult_max']){
-                $win_prize = $prize['prize_id'];
-                break;
-            }
-        }
-
-        return $win_prize;
-    }
-
-    /**
      * Закончить розыгрыш
      */
     public function endDrawing(int $draw_id):array

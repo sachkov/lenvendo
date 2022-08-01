@@ -94,6 +94,8 @@ class PrizeDrawingAddFirstDrawing
         $this->app = new App\Application;
 
         try{
+            if(!isset($this->app::$db)) throw new \Exception('DB connection fail.');
+            
             $draw_id = $this->getDrawID();
             if(!$draw_id) $draw_id = $this->addDraw();
 

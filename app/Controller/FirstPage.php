@@ -15,6 +15,11 @@ class FirstPage extends Common
             'user'=>$this->request->get('user')
         ];
 
+        $drawing = \App\Application::$container->get(Service\PrizeDrawing::class);
+
+        //Принимал ли пользователь участие в розыгрыше?
+        $data['prize'] = $drawing->getLastPrize($data['user']['id']);
+
         $this->response->setTemplate('index',$data);
 
         return $this->response;

@@ -14,6 +14,8 @@ class CreateSettingsTbl
     {
         $this->app = new App\Application;
 
+        if(!isset($this->app::$db)) throw new \Exception('DB connection fail.');
+
         $sql = "
             CREATE TABLE IF NOT EXISTS `settings`(
                 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
