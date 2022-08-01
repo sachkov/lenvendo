@@ -3,7 +3,7 @@ namespace App\Migrations;
 use App;
 
 /**
- * Класс для регистрации и запуска миграций приложения
+ * Создание основной таблицы пользователей
  */
 
 class Auth
@@ -23,6 +23,8 @@ class Auth
             WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?
         ";
         $bind = ['test', $table_name];
+
+        if(!isset($this->app::$db)) throw new \Exception('DB connection fail.');
 
         $resultSetPrev = $this->app::$db->executeQuery($sql, $bind);
         $existPrev = (int)$resultSetPrev->fetchOne();

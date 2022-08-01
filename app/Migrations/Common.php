@@ -9,7 +9,9 @@ use App;
 class Common
 {
     protected array $list = [
-        Auth::class
+        Auth::class,
+        PrizeDrawing::class,
+        PrizeDrawingAddFirstDrawing::class
     ];
 
     public function execute()

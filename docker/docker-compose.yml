@@ -8,12 +8,6 @@ services:
             - "$HTTP_PORT_BACK:80"
         tty: 
             true
-        environment:
-            MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-            MYSQL_DATABASE: $MYSQL_DATABASE 
-            MYSQL_USER: $MYSQL_USER
-            MYSQL_PASSWORD: $MYSQL_PASSWORD
-            DB_PORT: $DB_PORT
         networks:
             net:
         depends_on:
@@ -34,6 +28,8 @@ services:
             MYSQL_DATABASE: $MYSQL_DATABASE
             MYSQL_USER: $MYSQL_USER
             MYSQL_PASSWORD: $MYSQL_PASSWORD
+            DB_HOST: $DB_HOST
+            DB_PORT: $DB_PORT
             TIMEZONE: $TIMEZONE
         networks:
             net:
