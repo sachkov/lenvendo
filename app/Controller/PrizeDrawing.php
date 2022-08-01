@@ -10,9 +10,13 @@ class PrizeDrawing extends Common
     
     protected function GET():Http\Response
     {
+        $user = $this->request->get('user');
+
         $drawing = \App\Application::$container->get(Service\PrizeDrawing::class);
 
-        $prize = $drawing->getRandomPrize();
+        //$prize = $drawing->getRandomPrize();
+
+        $prize = $drawing->setPrizeTo($user);
 
         $data = [
             'user'=>$this->request->get('user')

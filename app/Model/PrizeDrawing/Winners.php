@@ -69,4 +69,12 @@ class Winners extends Model\Common
         return $win;
     }
 
+    /**
+     * Запись информации о призе
+     */
+    public function commit(array $user, array $prize)
+    {
+
+    }
+
 }
