@@ -12,10 +12,11 @@ class Prizes extends Model\Common
     protected $fields = [
         'id',
         'name',
-        'prize_type_id',
-        'draw_id',
-        'amount',
-        'multiplexer'
+        'value',            //ценность приза
+        'prize_type_id',    //тип приза
+        'draw_id',          //ИД розыгрыша
+        'amount',           //кол-во призов
+        'multiplexer'       //мультиплексор для рассчета % выигрыша
     ];
 
     protected $winners;

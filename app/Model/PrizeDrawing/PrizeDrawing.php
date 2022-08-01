@@ -12,6 +12,7 @@ class PrizeDrawing extends Model\Common
     protected $fields = [
         'id',
         'name',
+        'code',
         'active'
     ];
 
@@ -44,7 +45,7 @@ class PrizeDrawing extends Model\Common
     }
 
     /**
-     * Найти случайный приз
+     * Найти случайный приз (возможно перенести в сервис)
      */
     public function getRundomPrizeId()
     {

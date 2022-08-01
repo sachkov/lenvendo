@@ -30,13 +30,14 @@ class Application
             'dbname' => getenv('MYSQL_DATABASE'),
             'user' => getenv('MYSQL_USER'),
             'password' => getenv('MYSQL_PASSWORD'),
-            'port' => '3307',
-            'host' => '192.168.223.80',
+            'port' => getenv('DB_PORT'),
+            'host' => getenv('DB_HOST'),
             'driver' => 'pdo_mysql',
             'charset' => 'utf8'
         ];
 
         try {
+            if(!getenv('DB_HOST')) throw new \Exception('no ENV.');
             $conf = new \Doctrine\DBAL\Configuration();
 
             $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $conf);

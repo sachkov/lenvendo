@@ -10,6 +10,7 @@ class FirstPage extends Common
     
     protected function GET():Http\Response
     {
+        echo 'DB_HOST:'.getenv('DB_HOST'). " DB_PORT:".getenv('DB_PORT');
         $data = [
             'user'=>$this->request->get('user')
         ];
