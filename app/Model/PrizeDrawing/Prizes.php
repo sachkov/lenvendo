@@ -27,46 +27,11 @@ class Prizes extends Model\Common
     }
 
     /**
-     * Получение списка призов с мультиплексом значений для
-     * рассчета розыгрыша по остаткам
-     */
-    public function getPrizeValue(int $draw_id):array
-    {
-        if(!$draw_id) return [];
-
-        $db = $this->getDb();
-
-        $prizes = $this->getPrizeByDraw($draw_id);
-
-        $residue = $this->winners->getResidueByDraw($draw_id);
-
-        $multiplexer = 0; //cумма всех мультиплексоров призов * остаток
-        foreach($prizes as $k=>$prize){
-            if(!isset($residue[$prize['id']])) continue;
-
-            //остаток
-            $prizes[$k]['residue'] = $prize['amount'] - $residue['count'];
-            
-            if($prizes[$k]['residue'] <= 0) continue;
-
-            //мультиплексор
-            $prizes[$k]['mult_min'] = $multiplexer;
-            $multiplexer += $prizes[$k]['residue'] * $prize['multiplexer'];
-            $prizes[$k]['mult_max'] = $multiplexer-1;
-
-        }
-        $res['prizes'] = $prizes;
-        $res['multiplexer'] = $multiplexer;
-
-        return $res;
-    }
-
-    /**
      * Получение списка призов, учавствующих в розыгрыше
      */
-    public function getPrizeByDraw(int $draw_id):array
+    public function getPrizesByDraw(int $drawId):array
     {
-        if(!$draw_id) return [];
+        if(!$drawId) return [];
 
         $db = $this->getDb();
 
@@ -77,7 +42,7 @@ class Prizes extends Model\Common
         ";
 
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(1, $draw_id);
+        $stmt->bindValue(1, $drawId);
         $resultSet = $stmt->executeQuery();
 
         $res = $resultSet->fetchAllAssociative();

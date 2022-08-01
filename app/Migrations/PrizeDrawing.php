@@ -15,6 +15,7 @@ class PrizeDrawing
         $this->app = new App\Application;
 
         try{
+            if(!isset($this->app::$db)) throw new \Exception('DB connection fail.');
             $this->createDrawTable();
             $this->createPrizeTable();
             $this->createPrizeTypesTable();

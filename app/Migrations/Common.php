@@ -11,7 +11,8 @@ class Common
     protected array $list = [
         Auth::class,
         PrizeDrawing::class,
-        PrizeDrawingAddFirstDrawing::class
+        PrizeDrawingAddFirstDrawing::class,
+        CreateSettingsTbl::class
     ];
 
     public function execute()
