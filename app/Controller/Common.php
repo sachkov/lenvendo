@@ -24,10 +24,16 @@ class Common
         "DELETE"    => []
     ];
 
-    public function __construct(Http\Request $request)
+    public function setRequest(Http\Request $request)
     {
         $this->request = $request;
-        $this->response = \App\Application::$container->get(Http\Response::class);
+        return $this;
+    }
+
+    public function setResponse(Http\Response $response)
+    {
+        $this->response = $response;
+        return $this;
     }
 
     public function execute():Http\Response
