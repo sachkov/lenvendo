@@ -41,7 +41,7 @@ class Auth
                 `password` VARCHAR(255) NOT NULL COMMENT 'хэш пароля',
                 PRIMARY KEY `id`(`id`),
                 UNIQUE KEY `login`(`login`)
-            )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
             COMMENT='Основная таблица пользователей';
         ";
 

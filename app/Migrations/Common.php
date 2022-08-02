@@ -12,7 +12,10 @@ class Common
         Auth::class,
         PrizeDrawing::class,
         PrizeDrawingAddFirstDrawing::class,
-        CreateSettingsTbl::class
+        CreateSettingsTbl::class,
+        PrizeActions::class,
+        PrizeActionsFirstFill::class,
+        CreateUserPointsTbl::class
     ];
 
     public function execute()

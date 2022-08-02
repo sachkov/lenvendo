@@ -22,7 +22,7 @@ class CreateSettingsTbl
                 `name` VARCHAR(32) NOT NULL COMMENT 'Наименование настройки',
                 `code` VARCHAR(32) NOT NULL COMMENT 'Код настройки',
                 `section` VARCHAR(32) COMMENT 'Раздел настроек',
-                `value` INT(11) UNSIGNED NOT NULL COMMENT 'Значение настройки'
+                `value` INT(11) UNSIGNED NOT NULL COMMENT 'Значение настройки',
                 PRIMARY KEY `id`(`id`),
                 UNIQUE (`code`)
             )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci

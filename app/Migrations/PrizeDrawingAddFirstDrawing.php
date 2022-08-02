@@ -96,10 +96,17 @@ class PrizeDrawingAddFirstDrawing
         try{
             if(!isset($this->app::$db)) throw new \Exception('DB connection fail.');
             
-            $draw_id = $this->getDrawID();
-            if(!$draw_id) $draw_id = $this->addDraw();
+            $drawId = $this->getDrawID();
+            if(!$drawId) $drawId = $this->addDraw();
 
-            $this->addPrizes($draw_id);
+            $id = $this->checkPrizes($drawId);
+
+            if($id){
+                echo "Example prizes have already filled.\n";
+                return false;
+            }
+
+            $this->addPrizes($drawId);
 
         }catch(\Exception $e){
             echo "Migration ".__CLASS__." is failed!.\n";
@@ -139,23 +146,36 @@ class PrizeDrawingAddFirstDrawing
         return $id;
     }
 
-    private function addPrizes($draw_id)
+    private function checkPrizes($drawId)
+    {
+        $sql = "
+            SELECT `id` FROM `prizes`
+            WHERE `draw_id` = ?
+            LIMIT 1
+        ";
+
+        $id = $this->app::$db->fetchOne($sql,[$drawId]);
+
+        return $id;
+    }
+
+    private function addPrizes($drawId)
     {
         foreach($this->prizes as $prize){
-            $prize_type_id = $this->getPrizeTypeId($prize['code']);
+            $prizeTypeId = $this->getPrizeTypeId($prize['code']);
 
-            if(!$prize_type_id) $prize_type_id = $this->addPrizeType($prize);
+            if(!$prizeTypeId) $prizeTypeId = $this->addPrizeType($prize);
 
             foreach($prize['items'] as $item){
-                $item['prize_type_id'] = $prize_type_id;
-                $item['draw_id']= $draw_id;
+                $item['prize_type_id'] = $prizeTypeId;
+                $item['draw_id']= $drawId;
 
                 $this->app::$db->insert( 'prizes', $item );
             }
         }
     }
 
-    private function getPrizeTypeId(string $code, $after_insert=false)
+    private function getPrizeTypeId(string $code, $afterInsert=false)
     {
         $sql = "
             SELECT `id` FROM `prize_types`
@@ -166,7 +186,7 @@ class PrizeDrawingAddFirstDrawing
 
         $id = $this->app::$db->fetchOne($sql,[$code]);
 
-        if($after_insert && !$id) throw new \Exception('Error of adding new values in prize_types');
+        if($afterInsert && !$id) throw new \Exception('Error of adding new values in prize_types');
 
         return $id;
     }

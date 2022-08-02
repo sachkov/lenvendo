@@ -7,6 +7,15 @@ use App\Service;
 class FirstPage extends Common
 {
     protected $middlewareCommon = ['auth'];
+
+    protected $drawing;
+    protected $user;
+
+    public function __construct(Service\PrizeDrawing $drawing, Service\User $user)
+    {
+        $this->drawing = $drawing;
+        $this->user = $user;
+    }
     
     protected function GET():Http\Response
     {
@@ -15,10 +24,13 @@ class FirstPage extends Common
             'user'=>$this->request->get('user')
         ];
 
-        $drawing = \App\Application::$container->get(Service\PrizeDrawing::class);
+        //$drawing = \App\Application::$container->get(Service\PrizeDrawing::class);
 
         //Принимал ли пользователь участие в розыгрыше?
-        $data['prize'] = $drawing->getLastPrize($data['user']['id']);
+        $data['prize'] = [];
+        if(isset($data['user']) && isset($data['user']['id'])){
+            $data['prize'] = $this->drawing->getLastPrize($data['user']['id']);
+        }
 
         $this->response->setTemplate('index',$data);
 
@@ -29,9 +41,7 @@ class FirstPage extends Common
     {
         $request = $this->request->get('request');
 
-        $user = \App\Application::$container->get(Service\User::class);
-
-        $login = $user->login($request);
+        $login = $this->user->login($request);
 
         $data = [
             'user'=>$login

@@ -28,10 +28,21 @@ class Router
             $clName = $this->getClassName($path);
 
         $class = $this->defaultControllerFolder.$clName;
-        if(class_exists($class))
-            return new $class($this->request);
-        else 
-            throw new \Exception("Can't find class for path:'".$path."'. Class($class) not found. -".$clName."-");
+        if(class_exists($class)){
+            $controller = Application::$container->get($class);
+            $response = Application::$container->get(Http\Response::class);
+
+            $controller
+                ->setRequest($this->request)
+                ->setResponse($response);
+
+            return $controller;
+        }else{
+            throw new \Exception(
+                "Can't find class for path:'".$path."'. "
+                ."Class($class) not found. -".$clName."-"
+            );
+        }           
     }
 
     private function getClassName(string $path):string
