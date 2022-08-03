@@ -15,4 +15,25 @@ class PrizeTypes extends Model\Common
         'code'
     ];
 
+    /**
+     * Получить код действия по ИД розыгрыша и ИД типа приза
+     * @param int $prizeTypeId ИД типа приза
+     * @return string код действия
+     */
+    public function getCodeByPrizeTypeId(int $prizeTypeId):string
+    {
+        if(!$prizeTypeId) return '';
+        
+        $db = $this->getDb();
+
+        $sql = "
+            SELECT `code` 
+            FROM $this->table
+            WHERE `id` = ?
+        ";
+
+        $code = $db->fetchOne($sql, [$prizeTypeId]);
+
+        return $code;
+    }
 }

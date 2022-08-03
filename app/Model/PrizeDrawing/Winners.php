@@ -41,7 +41,12 @@ class Winners extends Model\Common
         $stmt->bindValue(1, $drawId);
         $resultSet = $stmt->executeQuery();
 
-        $res = $resultSet->fetchAllAssociativeIndexed();
+        $res = $resultSet->fetchAllAssociative();
+
+        $result = [];
+        foreach($res as $row){
+            $result[$row['prize_id']] = $row['count'];
+        }
 
         if(!$res) return [];
         return $res; 
@@ -60,7 +65,8 @@ class Winners extends Model\Common
         $db = $this->getDb();
 
         $sql = "
-            SELECT $this->table.`created_at`, `prizes`.`name` FROM $this->table
+            SELECT $this->table.`id` as 'win_id', $this->table.`created_at`, `prizes`.* 
+            FROM $this->table
             LEFT JOIN `prizes`
                 ON $this->table.`prize_id` = `prizes`.`id`
             WHERE $this->table.`user_id` = ?
@@ -129,9 +135,29 @@ class Winners extends Model\Common
             GROUP BY `prize_id`
         ";
 
-        $res = $db->fetchOne($sql, [$drawId, $prizeId], 0);
+        $res = $db->fetchOne($sql, [$drawId, $prizeId]);
 
         return (int)$res;
+    }
+
+    /**
+     * Получить строку по ИД
+     */
+    public function getById(int $id)
+    {
+        if(!$id) return false;
+
+        $db = $this->getDb();
+
+        $sql = "
+            SELECT * 
+            FROM $this->table
+            WHERE `id` = ?
+        ";
+
+        $res = $db->fetchAssociative($sql,[$id]);
+
+        return $res;
     }
 
 }

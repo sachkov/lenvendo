@@ -50,10 +50,10 @@ class PrizeActions
             CREATE TABLE IF NOT EXISTS `prize_actions_log`(
                 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `created_at` DATETIME NOT NULL COMMENT 'Дата действия',
-                `prize_id` INT(11) UNSIGNED NOT NULL COMMENT 'ИД  приза',
+                `winner_id` INT(11) UNSIGNED NOT NULL COMMENT 'ИД записи о выигрыше',
                 `prize_action_id` INT(11) UNSIGNED NOT NULL COMMENT 'ИД действия',
                 PRIMARY KEY `id`(`id`),
-                FOREIGN KEY (`prize_id`) REFERENCES `prizes`(`id`),
+                FOREIGN KEY (`winner_id`) REFERENCES `winners`(`id`),
                 FOREIGN KEY (`prize_action_id`) REFERENCES `prize_actions`(`id`)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             COMMENT='Таблица лога действия с призом';
