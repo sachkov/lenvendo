@@ -47,17 +47,19 @@ class PrizeDrawing
 
     /**
      * Присвоить случайный приз пользователю
+     * @param array $user массив с данными пользователя
+     * @return array|false массив с данными приза или false в случае ошибки
      */
     public function setPrizeTo(array $user)
     {
         $res = false;
         while(!$res){
-
+            // Получаем случайный приз из не выданных
             $prize = $this->getRundomPrize();
-
+            // Назначаем(выдаем) приз пользователю
             $res = $this->winners->commit($user, $prize);
         }
-
+        // Получаем данные приза
         $userPrize = $this->winners->getPrize($user['id'], $prize['draw_id']);
 
         return $userPrize;
@@ -67,6 +69,7 @@ class PrizeDrawing
      * Получить действия, которые пользователь может сделать с призом
      * @param array $prize - массив с информацией о призе 
      * @return array вида [name=>string,description=>string,choice=>string]
+     * (перенести вызов метода в коттроллер)
      */
     public function getPrizeAction(array $prize)
     {
@@ -112,6 +115,9 @@ class PrizeDrawing
 
     /**
      * Обработать запрос пользователя на действие с призом
+     * @param array $request массив с входящими параметрами запроса
+     * @param array $prize массив с данными приза, полученного пользователем
+     * (перенести вызов методов хэндлера в контроллер, проверять наличие приза у пользователя)
      */
     public function handleAction($request, $prize)
     {
@@ -127,6 +133,8 @@ class PrizeDrawing
     /**
      * Получение списка призов с мультиплексом значений для
      * рассчета розыгрыша по остаткам
+     * @param int ИД розыгрыша
+     * @return array массив вида [prizes=>[список призов],multiplexer=>int]
      */
     protected function getPrizeValue(int $drawId):array
     {
