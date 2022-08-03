@@ -28,20 +28,17 @@ class PrizeDrawing extends Model\Common
     /**
      * Получить активный розыгрыш
      */
-    public function getActive():int
+    public function getActiveId():int
     {
         $db = $this->getDb();
 
         $sql = "
-            SELECT * FROM $this->table
+            SELECT `id` FROM $this->table
             WHERE `active` = 1
-            ORDER BY `id`
             LIMIT 1
         ";
-        $statement = $db->prepare($sql);
-        $resultSet = $statement->executeQuery();
-        
-        return (int)$resultSet->fetchAssociative();
+
+        return (int)$db->fetchOne($sql);
     }
 
     /**
@@ -55,6 +52,6 @@ class PrizeDrawing extends Model\Common
 
         $db->update($this->table, ['active' => 0], ['id' => $draw_id]);
 
-        return ['error'=>'Draw' . $draw_id . ' is finished.'];
+        return ['error'=>'Draw ID=' . $draw_id . ' is finished.'];
     }
 }

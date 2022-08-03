@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Model\PrizeDrawing as ModelDrawing;
+use App\Service\PrizeAction;
 
 class PrizeDrawing
 {
@@ -12,24 +13,34 @@ class PrizeDrawing
     public function __construct(
         ModelDrawing\Winners $winners, 
         ModelDrawing\PrizeDrawing $draw,
-        ModelDrawing\Prizes $prizes
+        ModelDrawing\Prizes $prizes,
+        PrizeAction\Common $actionHandler
+
     ){
         $this->winners = $winners;
         $this->draw = $draw;
         $this->prizes = $prizes;
+        $this->actionHandler = $actionHandler;
     }
 
-    public function getLastPrize(int $userId):array
+    /**
+     * Получить приз пользователя в текущем розыгрыше
+     * @param int $userId ИД пользователя
+     * @return array|bool массив с описанием приза 
+     * или false если приз еще не получен
+     */
+    public function getLastPrize(int $userId)
     {
-        if(!$userId) return true;
+        if(!$userId) return false;
 
-        $drawId = $this->draw->getActive();
+        $drawId = $this->draw->getActiveId();
 
-        if(!$drawId) return true;
+        if(!$drawId) return false;
 
         $prize = $this->winners->getPrize($userId, $drawId);
 
-        if(!$prize) return [];
+        if(!$prize) return false;
+        $prize['draw_id'] = $drawId;
 
         return $prize;
     }
@@ -39,8 +50,6 @@ class PrizeDrawing
      */
     public function setPrizeTo(array $user)
     {
-        //get $drawId
-
         $res = false;
         while(!$res){
 
@@ -49,15 +58,29 @@ class PrizeDrawing
             $res = $this->winners->commit($user, $prize);
         }
 
-        return $res;
+        $userPrize = $this->winners->getPrize($user['id'], $prize['draw_id']);
+
+        return $userPrize;
+    }
+
+    /**
+     * Получить действия, которые пользователь может сделать с призом
+     * @param array $prize - массив с информацией о призе 
+     * @return array вида [name=>string,description=>string,choice=>string]
+     */
+    public function getPrizeAction(array $prize)
+    {
+        return $this->actionHandler->getActions($prize);
     }
 
     /**
      * Найти случайный приз
+     * @return array вида ["id"=>int,"name"=>string,"value"=>int,"prize_type_id"=>int,"draw_id"=>int,
+     * "amount"=>int,"multiplexer"=>int,"residue"=>int,"mult_min"=>int,"mult_max"=>int]
      */
     public function getRundomPrize()
     {
-        $drawId = $this->draw->getActive();
+        $drawId = $this->draw->getActiveId();
 
         if(!$drawId){
             return ['error'=>'No active drawing right now.'];
@@ -78,13 +101,27 @@ class PrizeDrawing
         // можно поменять на выборку с двоичным поиском
         foreach($prizes['prizes'] as $k=>$prize){
             if($win >= $prize['mult_min'] && $win <= $prize['mult_max']){
-                $win_prize = $prize;
-                $win_prize['draw_id'] = $drawId;
+                $winPrize = $prize;
+                $winPrize['draw_id'] = $drawId;
                 break;
             }
         }
 
         return $winPrize;
+    }
+
+    /**
+     * Обработать запрос пользователя на действие с призом
+     */
+    public function handleAction($request, $prize)
+    {
+        if(!isset($request['choise']) || !isset($prize['win_id'])) return false;
+
+        $action = $this->actionHandler->getActionByCode($request['choise']);
+
+        if(!$action) return false;
+
+        $this->actionHandler->setActionLog($action, $prize);
     }
 
     /**
@@ -101,10 +138,11 @@ class PrizeDrawing
 
         $multiplexer = 0; //cумма всех мультиплексоров призов * остаток
         foreach($prizes as $k=>$prize){
-            if(!isset($residue[$prize['id']])) continue;
+            if(!isset($residue[$prize['id']]) || !$residue[$prize['id']]) $rest = 0;
+            else $rest = $residue[$prize['id']];
 
             //остаток
-            $prizes[$k]['residue'] = $prize['amount'] - $residue['count'];
+            $prizes[$k]['residue'] = $prize['amount'] - $rest;
             
             if($prizes[$k]['residue'] <= 0) continue;
 
