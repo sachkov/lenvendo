@@ -11,9 +11,6 @@ use Psr\Container as Psrcontainer;
 
 class Container implements Psrcontainer\ContainerInterface
 {
-	/**
-	 * @var array
-	 */
 	protected array $instances = [];
 
 	/**
@@ -50,7 +47,6 @@ class Container implements Psrcontainer\ContainerInterface
 	}
 	/**
 	 * resolve single
-	 *
      */
 	public function get(string $id)
 	{
@@ -83,7 +79,7 @@ class Container implements Psrcontainer\ContainerInterface
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getDependencies($parameters)
+	protected function getDependencies(array $parameters):array
 	{
 		$dependencies = [];
 		foreach ($parameters as $parameter) {

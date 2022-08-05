@@ -22,9 +22,9 @@ class Application
     }
 
     /**
-     * Оприделение переменных окружения и констант приложения, получение сервис-контейнера
+     * Оприделение переменных окружения и констант приложения
      */
-    public function boot()
+    private function boot()
     {
         $connectionParams = [
             'dbname' => getenv('MYSQL_DATABASE'),
