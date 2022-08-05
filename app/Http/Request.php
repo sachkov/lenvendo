@@ -39,6 +39,7 @@ class Request
 
     public function getHttpMethod():string
     {
+        if(! isset($this->parameters['REQUEST_METHOD']) ) return 'GET';
         return strtoupper($this->parameters['REQUEST_METHOD']?:'GET');
     }
 

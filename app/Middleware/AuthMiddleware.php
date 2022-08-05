@@ -6,6 +6,8 @@ class AuthMiddleware extends Common
 {
     public function handle()
     {
+        if (headers_sent()) return false;
+
         session_start();
 
         if(isset($_SESSION['user']) && $_SESSION['user']){
