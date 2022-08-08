@@ -13,14 +13,12 @@ class PrizeDrawing
     public function __construct(
         ModelDrawing\Winners $winners, 
         ModelDrawing\PrizeDrawing $draw,
-        ModelDrawing\Prizes $prizes,
-        PrizeAction\Common $actionHandler
+        ModelDrawing\Prizes $prizes
 
     ){
         $this->winners = $winners;
         $this->draw = $draw;
         $this->prizes = $prizes;
-        $this->actionHandler = $actionHandler;
     }
 
     /**
@@ -66,17 +64,6 @@ class PrizeDrawing
     }
 
     /**
-     * Получить действия, которые пользователь может сделать с призом
-     * @param array $prize - массив с информацией о призе 
-     * @return array вида [name=>string,description=>string,choice=>string]
-     * (перенести вызов метода в коттроллер)
-     */
-    public function getPrizeAction(array $prize)
-    {
-        return $this->actionHandler->getActions($prize);
-    }
-
-    /**
      * Найти случайный приз
      * @return array вида ["id"=>int,"name"=>string,"value"=>int,"prize_type_id"=>int,"draw_id"=>int,
      * "amount"=>int,"multiplexer"=>int,"residue"=>int,"mult_min"=>int,"mult_max"=>int]
@@ -105,29 +92,12 @@ class PrizeDrawing
         foreach($prizes['prizes'] as $k=>$prize){
             if($win >= $prize['mult_min'] && $win <= $prize['mult_max']){
                 $winPrize = $prize;
-                $winPrize['draw_id'] = $drawId;
+                $winPrize['z'] = $drawId;
                 break;
             }
         }
 
         return $winPrize;
-    }
-
-    /**
-     * Обработать запрос пользователя на действие с призом
-     * @param array $request массив с входящими параметрами запроса
-     * @param array $prize массив с данными приза, полученного пользователем
-     * (перенести вызов методов хэндлера в контроллер, проверять наличие приза у пользователя)
-     */
-    public function handleAction($request, $prize)
-    {
-        if(!isset($request['choise']) || !isset($prize['win_id'])) return false;
-
-        $action = $this->actionHandler->getActionByCode($request['choise']);
-
-        if(!$action) return false;
-
-        $this->actionHandler->setActionLog($action, $prize);
     }
 
     /**

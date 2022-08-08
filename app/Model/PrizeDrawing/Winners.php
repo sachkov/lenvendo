@@ -80,6 +80,31 @@ class Winners extends Model\Common
     }
 
     /**
+     * ИД призеа который получил пользователь в розыгрыше
+     * @param int $userId - ИД пользователя
+     * @param int $drawId - ИД розыгрыша
+     * @return int - ИД приза или 0 если пользователь не получил приза
+     */
+    public function getPrizeId(int $userId, int $drawId)
+    {
+        if(!$userId || !$drawId) return 0;
+
+        $db = $this->getDb();
+
+        $sql = "
+            SELECT `prize_id`
+            FROM $this->table
+            WHERE `user_id` = ?
+                AND `draw_id` = ?
+            LIMIT 1
+        ";
+
+        $win = $db->fetchOne($sql,[$userId, $drawId]);
+
+        return (int)$win;
+    }
+
+    /**
      * Запись информации о призе
      * @param array $user - информация о пользователе
      * @param array $prize - информация о призе и ИД розыгрыша
@@ -98,6 +123,10 @@ class Winners extends Model\Common
 
             if(intval($prize['amount']) <= $count) 
                 throw new \Exception('All prizes '.$prize['name'].' was awarded.');
+
+            //Проверка, получал ли пользователь приз
+            $prizeId = $this->getPrizeId($user['id'], $prize['draw_id']);
+            if($prizeId) throw new \Exception('User have prize ID='.$prizeId.'.');
 
             $db->insert($this->table, [
                 'created_at'    => date('Y-m-d H:i:s'),
