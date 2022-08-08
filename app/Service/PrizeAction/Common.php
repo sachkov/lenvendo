@@ -24,6 +24,11 @@ class Common
         $this->prizeActionsLogModel = $prizeActionsLog;
     }
 
+    /**
+     * Получить действия, которые пользователь может сделать с призом
+     * @param array $prize - массив с информацией о призе 
+     * @return array вида [name=>string,description=>string,choice=>string]
+     */
     public function getActions(array $prize)
     {
         //$handler = $this->getHandler($prize['prize_type_id']);

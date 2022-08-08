@@ -33,8 +33,24 @@ class PrizeDrawing extends TestCase
         $this->assertArrayHasKey('draw_id', $res);
     }
 
-    public function getPrizeAction()
+    public function test_getRundomPrize()
     {
+        $container = new App\Container;
+        $obj = $container->get(App\Service\PrizeDrawing::class);
+        $this->assertInstanceOf(App\Service\PrizeDrawing::class, $obj);
 
+        $draw = $container->get(App\Model\ModelDrawing\PrizeDrawing::class);
+        $drawId = $draw->getActiveId();
+
+        $res = $obj->getRundomPrize();
+        $this->assertIsArray($res);
+
+        if(!$drawId){
+            $this->assertArrayHasKey('error', $res);
+        }else{
+            $this->assertArrayHasKey('draw_id', $res);
+            $this->assertArrayHasKey('mult_min', $res);
+            $this->assertArrayHasKey('id', $res);
+        }
     }
 }

@@ -2,15 +2,20 @@
 namespace App\Controller;
 use App\Http;
 use App\Service;
+use App\Service\PrizeAction;
 
 
 class PrizeDrawing extends Common
 {
     protected $middlewareCommon = ['auth'];
 
-    public function __construct(Service\PrizeDrawing $drawing)
+    protected $drawing;
+    protected $actionHandler;
+
+    public function __construct(Service\PrizeDrawing $drawing, PrizeAction\Common $actionHandler)
     {
         $this->drawing = $drawing;
+        $this->actionHandler = $actionHandler;
     }
     
     protected function GET():Http\Response
@@ -26,7 +31,7 @@ class PrizeDrawing extends Common
         }
 
         // Получить действие, которое выбрал пользователь для приза
-        $prizeAction = $this->drawing->getPrizeAction($prize);
+        $prizeAction = $this->actionHandler->getActions($prize);
 
         $data = [
             'user'          => $user,
@@ -50,10 +55,15 @@ class PrizeDrawing extends Common
         // Ранее полученный приз
         $prize = $this->drawing->getLastPrize($user['id']);
 
-        $this->drawing->handleAction($request, $prize);
+        // Выполнить действие которое запросил пользователь
+        if(isset($request['choise']) && isset($prize['win_id'])){
+            $action = $this->actionHandler->getActionByCode($request['choise']);
+
+            if($action) $this->actionHandler->setActionLog($action, $prize);
+        };
 
         // Получить действие, которое выбрал пользователь для приза
-        $prizeAction = $this->drawing->getPrizeAction($prize);
+        $prizeAction = $this->actionHandler->getActions($prize);
 
         $data = [
             'user'          => $user,
