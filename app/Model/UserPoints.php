@@ -28,7 +28,7 @@ class UserPoints extends Common
             if($total < 0) 
                 throw new \Exception('User ID='.$userId.' have no points');
 
-            $db->insert($this->table, [
+            $db->update($this->table, [
                 'user_id'   => $userId,
                 'value'     => $total
             ]);
