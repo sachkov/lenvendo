@@ -55,9 +55,8 @@ class PrizeDrawing extends Common
         // Ранее полученный приз
         $prize = $this->drawing->getLastPrize($user['id']);
 
-        //$this->drawing->handleAction($request, $prize);
         // Выполнить действие которое запросил пользователь
-        if(isset($request['choise']) ?? isset($prize['win_id'])){
+        if(isset($request['choise']) && isset($prize['win_id'])){
             $action = $this->actionHandler->getActionByCode($request['choise']);
 
             if($action) $this->actionHandler->setActionLog($action, $prize);

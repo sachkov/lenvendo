@@ -92,7 +92,7 @@ class PrizeDrawing
         foreach($prizes['prizes'] as $k=>$prize){
             if($win >= $prize['mult_min'] && $win <= $prize['mult_max']){
                 $winPrize = $prize;
-                $winPrize['z'] = $drawId;
+                $winPrize['draw_id'] = $drawId;
                 break;
             }
         }
