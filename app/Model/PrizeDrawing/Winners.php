@@ -139,25 +139,4 @@ class Winners extends Model\Common
 
         return (int)$res;
     }
-
-    /**
-     * Получить строку по ИД
-     */
-    public function getById(int $id)
-    {
-        if(!$id) return false;
-
-        $db = $this->getDb();
-
-        $sql = "
-            SELECT * 
-            FROM $this->table
-            WHERE `id` = ?
-        ";
-
-        $res = $db->fetchAssociative($sql,[$id]);
-
-        return $res;
-    }
-
 }
