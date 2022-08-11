@@ -1,14 +1,14 @@
 <?php
 namespace App\Http;
 
-class Request
+class Request implements RequestInterface
 {
-    private $query=[];
-    private $request=[];
-    private $cookies=[];
-    private $parameters=[];
-    private $path='/';
-    private $user;
+    protected $query=[];
+    protected $request=[];
+    protected $cookies=[];
+    protected $parameters=[];
+    protected $path='/';
+    protected $user;
 
     public function __construct()
     {
@@ -46,6 +46,11 @@ class Request
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
     }
 
     protected function preparePathInfo()
