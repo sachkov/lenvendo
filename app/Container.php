@@ -4,9 +4,9 @@ use App\Http;
 use Psr\Container as Psrcontainer;
 
 /**
- * Простой DI контейнер для получения зависимостей через рефлексию
- * Можно переоприделять зависимости через массив $instances
- * или добавить конкретную реализацию интерфейса
+ * Simple DI container for getting dependencies through reflection
+ * Possible to rewrite dependencies in $instances array
+ * or add specific implementation of interface.
  */
 
 class Container implements Psrcontainer\ContainerInterface
@@ -14,7 +14,7 @@ class Container implements Psrcontainer\ContainerInterface
 	protected array $instances = [];
 
 	/**
-     * Задать массив $instances
+     * Set array $instances 
 	 * @param array of instanses
      * @return Container
 	 */
@@ -25,8 +25,7 @@ class Container implements Psrcontainer\ContainerInterface
 	}
 
     /**
-     * Добавить в массив $instances новые записи
-     * Старые будут переоприделены
+	 * Add new entries in $instances, old entries will be rewritten
      */
     public function add(array $instances):Container
     {
@@ -37,16 +36,19 @@ class Container implements Psrcontainer\ContainerInterface
     }
 
 	/**
-     * 
+     * Do we have specific implementation of class $id or not
+	 * @param string $id - class name, or interface name
+	 * @return bool
 	 */
 	public function has(string $id):bool
 	{
-		// if we don't have it, just register it
 		if (isset($this->instances[$id])) return true;
 		return false;
 	}
+	
 	/**
-	 * resolve single
+	 * Get class by it's name or interface
+	 * @param string $id - class name, or interface name
      */
 	public function get(string $id)
 	{
@@ -56,7 +58,7 @@ class Container implements Psrcontainer\ContainerInterface
 		$reflector = new \ReflectionClass($concrete);
 		// check if class is instantiable
 		if (!$reflector->isInstantiable()) {
-			throw new \Exception("Class {$concrete} is not instantiable");
+			throw new \Exception("Class {$concrete} is not instantiable.");
 		}
 		// get class constructor
 		$constructor = $reflector->getConstructor();
@@ -72,10 +74,8 @@ class Container implements Psrcontainer\ContainerInterface
 	}
 
 	/**
-	 * get all dependencies resolved
-	 *
-	 * @param $parameters
-	 *
+	 * Get all dependencies resolved
+	 * @param array $parameters - class dependencies
 	 * @return array
 	 * @throws Exception
 	 */

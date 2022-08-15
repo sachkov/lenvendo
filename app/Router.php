@@ -3,14 +3,24 @@ namespace App;
 use App\Http;
 
 
-class Router
+class Router implements RouterInterface
 {
-    private $defaultControllerFolder = 'App\\Controller\\';
-    private $defaultControllerName = 'Common';
-    private $firstPageController = 'FirstPage';
-    private $request;
+    protected $defaultControllerFolder = 'App\\Controller\\';
+    protected $defaultControllerName = 'Common';
+    protected $firstPageController = 'FirstPage';
+    protected $request;
+    protected $response;
 
-    public function handle(Http\Request $request):Http\Response
+    public function __construct(Http\ResponseInterface $response)
+    {
+        $this->response = $response;
+    }
+    /**
+     * Get and execute Controller
+     * @param App\Http\RequestInterface
+     * @return App\Http\ResponseInterface
+     */
+    public function handle(Http\RequestInterface $request):Http\ResponseInterface
     {
         $this->request = $request;
 
@@ -19,7 +29,7 @@ class Router
         return $controller->execute();
     }
 
-    private function getController(string $path)
+    protected function getController(string $path)
     {
         $clName = $this->defaultControllerName;
 
@@ -30,11 +40,10 @@ class Router
         $class = $this->defaultControllerFolder.$clName;
         if(class_exists($class)){
             $controller = Application::$container->get($class);
-            $response = Application::$container->get(Http\Response::class);
 
             $controller
                 ->setRequest($this->request)
-                ->setResponse($response);
+                ->setResponse($this->response);
 
             return $controller;
         }else{
@@ -45,7 +54,7 @@ class Router
         }           
     }
 
-    private function getClassName(string $path):string
+    protected function getClassName(string $path):string
     {
         $clName = str_replace('/','\\',$path);
         $arPath = explode('\\',$clName);
@@ -58,7 +67,7 @@ class Router
         return $clName;
     }
 
-    private function realName(string $name):string
+    protected function realName(string $name):string
     {
         $res = '';
         $word = explode('_',$name);

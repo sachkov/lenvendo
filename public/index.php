@@ -3,9 +3,9 @@ require __DIR__.'./../vendor/autoload.php';
 
 $app = new App\Application;
 
-$request = $app->getRequest();  // Получаем запрос
+$request = $app->getRequest();
 
-$response = $app->handle($request); // Запрос должен передоваться сначала в роут, затем в контроллер
+$response = $app->handle($request); // Application send response to route, then into controller
 
-$app->end($request, $response);   //Отправляем ответ
+$app->end($response, $request);   // send the response
 ?>

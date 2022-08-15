@@ -17,7 +17,7 @@ class FirstPage extends Common
         $this->user = $user;
     }
     
-    protected function GET():Http\Response
+    protected function GET():Http\ResponseInterface
     {
         $data = [
             'user'=>$this->request->get('user')
@@ -34,7 +34,7 @@ class FirstPage extends Common
         return $this->response;
     }
 
-    protected function POST():Http\Response
+    protected function POST():Http\ResponseInterface
     {
         $request = $this->request->get('request');
 
