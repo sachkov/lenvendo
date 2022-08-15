@@ -30,13 +30,13 @@ class Common
         return $this;
     }
 
-    public function setResponse(Http\Response $response)
+    public function setResponse(Http\ResponseInterface $response)
     {
         $this->response = $response;
         return $this;
     }
 
-    public function execute():Http\Response
+    public function execute():Http\ResponseInterface
     {
         $method = $this->request->getHttpMethod();
 
@@ -55,27 +55,27 @@ class Common
         return $this->$method();
     }
 
-    protected function POST():Http\Response
+    protected function POST():Http\ResponseInterface
     {
         return $this->response->setError(404);
     }
 
-    protected function GET():Http\Response
+    protected function GET():Http\ResponseInterface
     {
         return $this->response->setError(404);
     }
 
-    protected function PUT():Http\Response
+    protected function PUT():Http\ResponseInterface
     {
         return $this->response->setError(404);
     }
 
-    protected function PATCH():Http\Response
+    protected function PATCH():Http\ResponseInterface
     {
         return $this->response->setError(404);
     }
 
-    protected function DELETE():Http\Response
+    protected function DELETE():Http\ResponseInterface
     {
         return $this->response->setError(404);
     }

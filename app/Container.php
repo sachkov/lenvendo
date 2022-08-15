@@ -41,7 +41,6 @@ class Container implements Psrcontainer\ContainerInterface
 	 */
 	public function has(string $id):bool
 	{
-		// if we don't have it, just register it
 		if (isset($this->instances[$id])) return true;
 		return false;
 	}
@@ -56,7 +55,12 @@ class Container implements Psrcontainer\ContainerInterface
 		$reflector = new \ReflectionClass($concrete);
 		// check if class is instantiable
 		if (!$reflector->isInstantiable()) {
-			throw new \Exception("Class {$concrete} is not instantiable");
+			echo '<b>'.$concrete.'</b><br>';
+			echo 'id: '.$id.'<br>';
+			echo 'has: '.(int)$this->has($id).'<br>';
+			echo '$this->instances[$id]: '.$this->instances[$id].'<br>';
+			print_r($this->instances);
+			throw new \Exception("Class {$concrete} is not instantiable.");
 		}
 		// get class constructor
 		$constructor = $reflector->getConstructor();

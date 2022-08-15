@@ -8,7 +8,7 @@ class Common
     protected $request;
     protected $response;
 
-    public function __construct(Http\Request $request, Http\Response $response)
+    public function __construct(Http\RequestInterface $request, Http\ResponseInterface $response)
     {
         $this->request = $request;
         $this->response = $response;

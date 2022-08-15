@@ -51,15 +51,15 @@ class Application
     /**
      * Получение данных http запроса
      */
-    public function getRequest():Http\Request
+    public function getRequest():Http\RequestInterface
     {
-        return self::$container->get(Http\Request::class);
+        return self::$container->get(Http\RequestInterface::class);
     }
 
     /**
      * Обработка запроса - передача его в контроллер через роутер
      */
-    public function handle(Http\Request $request):Http\Response
+    public function handle(Http\RequestInterface $request):Http\ResponseInterface
     {
         $router = self::$container->get(Router::class);
 
@@ -71,7 +71,7 @@ class Application
     /**
      * Отправка ответа
      */
-    public function end(Http\Request $request, Http\Response $response)
+    public function end(Http\ResponseInterface $response, Http\RequestInterface $request)
     {
         $response->send();
     }

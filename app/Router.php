@@ -3,14 +3,14 @@ namespace App;
 use App\Http;
 
 
-class Router
+class Router implements RouterInterface
 {
     private $defaultControllerFolder = 'App\\Controller\\';
     private $defaultControllerName = 'Common';
     private $firstPageController = 'FirstPage';
     private $request;
 
-    public function handle(Http\Request $request):Http\Response
+    public function handle(Http\RequestInterface $request):Http\ResponseInterface
     {
         $this->request = $request;
 
@@ -30,7 +30,7 @@ class Router
         $class = $this->defaultControllerFolder.$clName;
         if(class_exists($class)){
             $controller = Application::$container->get($class);
-            $response = Application::$container->get(Http\Response::class);
+            $response = Application::$container->get(Http\ResponseInterface::class);
 
             $controller
                 ->setRequest($this->request)

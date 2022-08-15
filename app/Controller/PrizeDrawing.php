@@ -18,7 +18,7 @@ class PrizeDrawing extends Common
         $this->actionHandler = $actionHandler;
     }
     
-    protected function GET():Http\Response
+    protected function GET():Http\ResponseInterface
     {
         $user = $this->request->get('user');
 
@@ -47,7 +47,7 @@ class PrizeDrawing extends Common
     /**
      * Выбор действия с призом
      */
-    protected function POST():Http\Response
+    protected function POST():Http\ResponseInterface
     {
         $user = $this->request->get('user');
         $request = $this->request->get('request');
