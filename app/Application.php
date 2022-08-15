@@ -22,7 +22,7 @@ class Application
     }
 
     /**
-     * Оприделение переменных окружения и констант приложения
+     * Define env variables and application constants
      */
     private function boot()
     {
@@ -49,7 +49,7 @@ class Application
     }
 
     /**
-     * Получение данных http запроса
+     * Get http request data
      */
     public function getRequest():Http\RequestInterface
     {
@@ -57,7 +57,7 @@ class Application
     }
 
     /**
-     * Обработка запроса - передача его в контроллер через роутер
+     * Query handling - transmit query to controller through the router
      */
     public function handle(Http\RequestInterface $request):Http\ResponseInterface
     {
@@ -69,7 +69,7 @@ class Application
     }
 
     /**
-     * Отправка ответа
+     * Send response
      */
     public function end(Http\ResponseInterface $response, Http\RequestInterface $request)
     {
