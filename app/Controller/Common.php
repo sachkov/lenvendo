@@ -4,11 +4,12 @@ use App\Http;
 use App\Middleware\Common as Middleware;
 
 /**
- * 1. Конструктор получает запрос
- * 2. Вызывается главный метод execute
- * 3. Главный метод оприделяет какой метод вызвать на основании метода запроса
- * 4. Добавляет в мидлвэар этапы(типы соответствующие запросу)
- * 5. Вызывает обработчик запроса, соответствующий методу (реализован в наследнике)
+ * Base class for all controllers
+ * 1. Constructor with dependencies implemented in subclasses.
+ * 2. Main method execute which was called in router.
+ * 3. Defines which method must be called based on request http method.
+ * 4. Added middleware stages (redefines in subclasses).
+ * 5. Called request handler, which reimplemented in subclass.
  */
 
 class Common

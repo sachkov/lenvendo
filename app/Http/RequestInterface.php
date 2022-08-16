@@ -8,4 +8,6 @@ interface RequestInterface
     public function getKey(string $name, $key);
 
     public function getHttpMethod():string;
+
+    public function setUser($user);
 }
