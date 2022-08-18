@@ -7,7 +7,7 @@ class Router implements RouterInterface
 {
     protected $defaultControllerFolder = 'App\\Controller\\';
     protected $defaultControllerName = 'Common';
-    protected $firstPageController = 'FirstPage';
+    protected $firstPageController = 'Index';
     protected $request;
     protected $response;
 
@@ -34,42 +34,37 @@ class Router implements RouterInterface
     {
         $clName = $this->defaultControllerName;
 
-        if($path == '/') $clName = $this->firstPageController;
-        else if(strpos($path, '/') !== false )
+        if(strpos($path, '/') !== false )
             $clName = $this->getClassName($path);
 
         $class = $this->defaultControllerFolder.$clName;
-        if(class_exists($class)){
-            $controller = Application::$container->get($class);
+        if(!class_exists($class)){
+            $class = $this->defaultControllerFolder.$this->defaultControllerName;
+        }
+        $controller = Application::$container->get($class);
 
-            $controller
-                ->setRequest($this->request)
-                ->setResponse($this->response);
+        $controller
+            ->setRequest($this->request)
+            ->setResponse($this->response);
 
-            return $controller;
-        }else{
-            throw new \Exception(
-                "Can't find class for path:'".$path."'. "
-                ."Class($class) not found. -".$clName."-"
-            );
-        }           
+        return $controller;         
     }
 
     protected function getClassName(string $path):string
     {
-        $clName = str_replace('/','\\',$path);
-        $arPath = explode('\\',$clName);
+        $arPath = explode('/',$path);
         $clName = '';
-        foreach($arPath as $path){
-            if(!$path) continue;
+        foreach($arPath as $k=>$name){
+            if(!$clName && !$name && $k<(count($arPath)-1)) continue;
             if($clName) $clName .= '\\';
-            $clName .= $this->realName($path);
+            $clName .= $this->realName($name);
         }
         return $clName;
     }
 
     protected function realName(string $name):string
     {
+        if(!$name) return $this->firstPageController;
         $res = '';
         $word = explode('_',$name);
         foreach($word as $part){

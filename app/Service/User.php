@@ -1,58 +1,75 @@
 <?php
 namespace App\Service;
 
+use App\Model;
 
 class User
 {  
+    protected $usersModel;
+
+    public function __construct(Model\Users $users)
+    {
+        $this->usersModel = $users;
+    }
+
     public function login($request)
     {
-        $db = \App\Application::$db;
-
         if(isset($request['loguot'])){
             unset($_SESSION['user']);
+            header('Location: /', true, 302); die;
             return [];
         }
 
-        if(!isset($request['login']) || !isset($request['password'])) return [];
-
-        $sql = "
-            SELECT * FROM `users`
-            WHERE login = ?
-            LIMIT 1
-        ";
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue(1, strval($request['login']));
-        $resultSet = $stmt->executeQuery();
-        $res = $resultSet->fetchAssociative();
-
-        if(!$res){
-            //create new user
-            $db->insert(
-                'users', 
-                [
-                    'login' => strval($request['login']),
-                    'password'=> password_hash(strval($request['password']), PASSWORD_DEFAULT)
-                ]
-            );
-            $resultSet = $stmt->executeQuery();
-            $res = $resultSet->fetchAssociative();
-
-            if(!$res) throw new \Exception('User creating error.');
-            $_SESSION['user'] = $res;
-            return $res;
-        }
-
-        // password check
-        if(!password_verify(strval($request['password']), $res['password'])){
-            unset($_SESSION['user']);
+        if(!isset($request['login']) || !isset($request['password'])){
             return [
                 'login'=>$request['login'],
-                'error'=>'wrong password'
+                'error'=>'login or password is not set.'
             ];
         }
 
-        $_SESSION['user'] = $res;
-        return $res;
-    }
+        if(strlen($request['login']) < 3){
+            return [
+                'login'=>$request['login'],
+                'error'=>"login can't be less whan 3 symbols."
+            ];
+        }
 
+        if(strlen($request['password']) < 3){
+            return [
+                'login'=>$request['login'],
+                'error'=>"password can't be less whan 3 symbols."
+            ];
+        }
+
+        $user = $this->usersModel->getUserByLogin($request['login']);
+
+        
+        if($user){
+            // password check
+            if(!password_verify(strval($request['password']), $user['password'])){
+                unset($_SESSION['user']);
+                return [
+                    'login'=>$request['login'],
+                    'error'=>'wrong password'
+                ];
+            }
+        }else{
+            // create new user if does't exist
+            $user = $this->usersModel->addNew($request['login'], $request['password']);
+            if(!$user){
+                return [
+                    'login'=>$request['login'],
+                    'error'=>'creating user error.'
+                ];
+            }
+        }
+
+        $_SESSION['user'] = $user;
+        return $user;
+        // $backurl = '/';
+        // if(isset($request['backurl']) && $request['backurl']){
+        //     $backurl = strval($request['backurl']);
+        // }
+        // header('Location: '.$backurl, true, 301); die;
+    }
 }

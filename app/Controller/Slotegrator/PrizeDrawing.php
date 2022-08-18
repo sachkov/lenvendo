@@ -1,11 +1,12 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Slotegrator;
+
 use App\Http;
 use App\Service;
 use App\Service\PrizeAction;
+use App\Controller;
 
-
-class PrizeDrawing extends Common
+class PrizeDrawing extends Controller\Common
 {
     protected $middlewareCommon = ['auth'];
 
@@ -18,6 +19,9 @@ class PrizeDrawing extends Common
         $this->actionHandler = $actionHandler;
     }
     
+    /**
+     * Информация о призе который получил пользователь
+     */
     protected function GET():Http\ResponseInterface
     {
         $user = $this->request->get('user');
@@ -39,7 +43,7 @@ class PrizeDrawing extends Common
             'prizeAction'   => $prizeAction
         ];
 
-        $this->response->setTemplate('drawing',$data);
+        $this->response->setTemplate('slotegrator_drawing',$data);
 
         return $this->response;
     }
@@ -71,7 +75,7 @@ class PrizeDrawing extends Common
             'prizeAction'   => $prizeAction
         ];
 
-        $this->response->setTemplate('drawing',$data);
+        $this->response->setTemplate('slotegrator_drawing',$data);
 
         return $this->response;
     }

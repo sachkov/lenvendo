@@ -1,10 +1,11 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Slotegrator;
+
 use App\Http;
 use App\Service;
+use App\Controller;
 
-
-class FirstPage extends Common
+class Index extends Controller\Common
 {
     protected $middlewareCommon = ['auth'];
 
@@ -17,6 +18,9 @@ class FirstPage extends Common
         $this->user = $user;
     }
     
+    /**
+     * Кнопка Эпринять участие в розыгрыше
+     */
     protected function GET():Http\ResponseInterface
     {
         $data = [
@@ -29,19 +33,24 @@ class FirstPage extends Common
             $data['prize'] = $this->drawing->getLastPrize($data['user']['id']);
         }
 
-        $this->response->setTemplate('index',$data);
+        $this->response->setTemplate('slotegrator_index',$data);
 
         return $this->response;
     }
 
+    /*
     protected function POST():Http\ResponseInterface
     {
-        $request = $this->request->get('request');
+        //$request = $this->request->get('request');
 
-        $login = $this->user->login($request);
+        //$login = $this->user->login($request);
+
+        //$data = [
+        //    'user'=>$login
+        //];
 
         $data = [
-            'user'=>$login
+            'user'=>$this->request->get('user')
         ];
 
         //Принимал ли пользователь участие в розыгрыше?
@@ -50,8 +59,9 @@ class FirstPage extends Common
             $data['prize'] = $this->drawing->getLastPrize($data['user']['id']);
         }
 
-        $this->response->setTemplate('index',$data);
+        $this->response->setTemplate('slotegrator_index',$data);
 
         return $this->response;
     }
+    */
 }

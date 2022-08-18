@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test task PHP Developer{% endblock %}
+
+{% block body %}
+
+{% if not user.id %}
+    
+<div class="d-flex align-items-center">
+    <div class="container-sm">
+        <form action="/auth" method="POST">
+            <legend>Sing in (no registartion needed.)</legend>
+            <div class="mb-3">
+                <label for="loginInput" class="form-label">Login</label>
+                <input name="login" type="text" class="form-control" id="loginInput" 
+                    value="{{user.login}}">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input name="password" type="password" id="exampleInputPassword1"
+                    class="form-control {% if user.error %}is-invalid{% endif %}">
+                <div id="validation" class="invalid-feedback">
+                    {% if user.error %}{{user.error}}{% endif %}
+                </div>
+            </div>
+            <input type="text" hidden name="backurl" value="/slotegrator/">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+{% endif %}
+
+{% if user.id %}
+
+    {% if prize.created_at %}
+
+        <h4>Вы уже принимали участие в розыгрыше {{prize.created_at}}</h4>
+        
+    {% endif %}
+
+    {% if not prize.created_at %}
+        <div class="d-flex align-items-center justify-content-center w-100 vh-100">
+            <form action="/slotegrator/prize_drawing" method="GET">
+                <button type="submit" class="btn btn-success btn-lg">Получить приз!</button>
+            </form>
+        </div>
+    {% endif %}
+{% endif %}
+
+{% endblock %}
