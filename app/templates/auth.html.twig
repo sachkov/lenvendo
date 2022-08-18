@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Test task PHP Developer{% endblock %}
+{% block title %}Auth{% endblock %}
 
 {% block body %}
 
 {% if not user.id %}
     
-<div class="d-flex align-items-center w-100 vh-100">
+<div class="d-flex align-items-center">
     <div class="container-sm">
-        <form action="/" method="POST">
+        <form action="/auth" method="POST">
             <legend>Sing in (no registartion needed.)</legend>
             <div class="mb-3">
                 <label for="loginInput" class="form-label">Login</label>
@@ -28,37 +28,13 @@
     </div>
 </div>
 
-
 {% endif %}
+
 
 {% if user.id %}
 
-    {% if prize.created_at %}
-
-        <h4>Вы принили участие в розыгрыше {{prize.created_at}}</h4>
-
-        <p>Ваш выигрыш {{prize.name}}
-        
-    {% endif %}
-
-    {% if action.created_at %}
-            <p>Вы выбрали: {{action.description}}</p>
-    {% else %}
-
-        {% for action in prizeAction %}
-
-            {% if action.description %}          
-                <p>{{action.description}}</p>
-                <form method="POST">
-                    <input name="choise" type="text" hidden value="{{action.code}}">
-                    <button type="submit" class="btn btn-primary">{{action.name}}</button>
-                </form>
-            {% endif %}
-            
-        {% endfor %}
-        
-    {% endif %}
-
+<h4>{{user.login}} вы успешно авторизованы на сайте!</h4>
+    
 {% endif %}
 
 {% endblock %}

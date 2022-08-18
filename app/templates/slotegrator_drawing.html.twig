@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test task PHP Developer{% endblock %}
+
+{% block body %}
+
+{% if not user.id %}
+    
+<div class="d-flex align-items-center w-100 vh-100">
+    <div class="container-sm">
+        <form action="/" method="POST">
+            <legend>Sing in (no registartion needed.)</legend>
+            <div class="mb-3">
+                <label for="loginInput" class="form-label">Login</label>
+                <input name="login" type="text" class="form-control" id="loginInput" 
+                    value="{{user.login}}">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input name="password" type="password" id="exampleInputPassword1"
+                    class="form-control {% if user.error %}is-invalid{% endif %}">
+                <div id="validation" class="invalid-feedback">
+                    {% if user.error %}{{user.error}}{% endif %}
+                </div>
+            </div>
+            <input type="text" hidden name="backurl" value="/slotegrator/prize_drawing">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+{% endif %}
+
+{% if user.id %}
+
+    {% if prize.created_at %}
+
+        <h4>Вы принили участие в розыгрыше {{prize.created_at}}</h4>
+
+        <p>Ваш выигрыш {{prize.name}}
+        
+    {% endif %}
+
+    {% if action.created_at %}
+            <p>Вы выбрали: {{action.description}}</p>
+    {% else %}
+
+        {% for action in prizeAction %}
+
+            {% if action.description %}          
+                <p>{{action.description}}</p>
+                <form method="POST">
+                    <input name="choise" type="text" hidden value="{{action.code}}">
+                    <button type="submit" class="btn btn-primary">{{action.name}}</button>
+                </form>
+            {% endif %}
+            
+        {% endfor %}
+        
+    {% endif %}
+
+{% endif %}
+
+{% endblock %}

@@ -14,10 +14,11 @@ class AuthMiddleware extends Common
             $this->request->setUser($_SESSION['user']);
             return true;
         }
+        //echo '<pre>';
+        //print_r($_SESSION);die;
 
-        if($this->request->get('path') != '/'){
-            header('Location: /', true, 307); die;
-        }
+        // if user is not authtorized, but it is required.
+        //header('Location: /auth', true, 307); die;
     }
 
 }

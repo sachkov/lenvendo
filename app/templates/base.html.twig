@@ -16,9 +16,9 @@
             <div class="container mx-auto">
             
             {% if user.login and user.id %}
+
             <div class="auth d-flex justify-content-end">
-              
-              <form action="/" method="POST">
+              <form action="/auth" method="POST">
                 <label>
                   <span>user: </span><b>{{ user.login }}</b>
                 </label>
@@ -26,6 +26,13 @@
                 <button type="submit" class="btn btn-info">Logout</button>
               </form>
             </div>
+
+            {% else %}
+
+            <div class="auth d-flex justify-content-end">
+                <a href="/auth" class="btn btn-success">LogIn</a>
+            </div>
+
             {% endif %}
 
             </div>

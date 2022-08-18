@@ -1,51 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Test task PHP Developer{% endblock %}
+{% block title %}PHP Framework Example{% endblock %}
 
 {% block body %}
 
-{% if not user.id %}
-    
-<div class="d-flex align-items-center">
-    <div class="container-sm">
-        <form action="/" method="POST">
-            <legend>Sing in (no registartion needed.)</legend>
-            <div class="mb-3">
-                <label for="loginInput" class="form-label">Login</label>
-                <input name="login" type="text" class="form-control" id="loginInput" 
-                    value="{{user.login}}">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input name="password" type="password" id="exampleInputPassword1"
-                    class="form-control {% if user.error %}is-invalid{% endif %}">
-                <div id="validation" class="invalid-feedback">
-                    {% if user.error %}{{user.error}}{% endif %}
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-</div>
+<h3>Приложение демонстрирует основные возможрости MVC- фреймворка.</h3>
 
+<p>Класс <b>Application</b> - начальный класс приложения, осуществляет первичную загрузку параметров, соединения с БД, DI-контейнера.</p>
+<p>Класс <b>Container</b> это DI-контейнер, который осуществляет рекурсивное создание классов на основе их зависимостей указанной в конструкторе.</p>
+<p>Класс <b>Router</b> - служит для маршрутизации - нахождения и создания контроллера, который предназначен для обработки запроса.</p>
+<p>Класс <b>Request</b> - обрабатывает входящий запрос, выделяя входные параметры.</p>
+<p>Класс <b>Response</b> - формирует ответ сервера.</p>
+<p>Контроллеры - содержат логику обработки запросов.</p>
+<p><b>Middleware</b> - посредники, могут быть вызваны до выполнения контроллера с целью реализации какой-либо общай бизнес-логики, такой как фильтрация или аунтификация.</p>
+<p>Модели - служат для работы с базой данных.</p>
+<p>Миграции - оприделенные действия (как правило в базе данных), которые необходимо повторить на всех экземплярах системы.</p>
+<p>Виды - представлены шаблонами <i>twig</i>.</p>
+<p>Консольные команды - представлены библиотекой <i>symfony/console</i>.</p>
+<p>Для работы с БД используется <i>doctrine/dbal</i>.</p>
+<p>Юнит-тесты написаны с использованием <i>PHPUnit</i>.</p>
+<br>
+<p>Приложение работает в docker окружение, оркестрация через docker-compose. Основная цель приложения - демонстрация навыков работы автора, а так же платформа для выполнения тестовых заданий.</p>
 
-{% endif %}
-
-{% if user.id %}
-
-    {% if prize.created_at %}
-
-        <h4>Вы уже принимали участие в розыгрыше {{prize.created_at}}</h4>
-        
-    {% endif %}
-
-    {% if not prize.created_at %}
-        <div class="d-flex align-items-center justify-content-center w-100 vh-100">
-            <form action="/prize_drawing" method="GET">
-                <button type="submit" class="btn btn-success btn-lg">Получить приз!</button>
-            </form>
-        </div>
-    {% endif %}
-{% endif %}
-
+<p>Тестовые задания:</p>
+<ul>
+    <li><a href="/slotegrator/">Вэб-приложение для розыгрыша призов</a></li>
+</ul>
 {% endblock %}
