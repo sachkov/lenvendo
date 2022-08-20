@@ -13,7 +13,7 @@ class Request implements RequestInterface
     public function __construct()
     {
         $this->query = $_GET;
-        $this->request = $_POST;
+        $this->request = $_REQUEST;
         $this->cookies = $_COOKIE;
         $this->parameters = $_SERVER;
         $this->preparePathInfo();

@@ -39,7 +39,7 @@ class PrizeDrawing extends TestCase
         $obj = $container->get(App\Service\PrizeDrawing::class);
         $this->assertInstanceOf(App\Service\PrizeDrawing::class, $obj);
 
-        $draw = $container->get(App\Model\ModelDrawing\PrizeDrawing::class);
+        $draw = $container->get(App\Model\PrizeDrawing\PrizeDrawing::class);
         $drawId = $draw->getActiveId();
 
         $res = $obj->getRundomPrize();

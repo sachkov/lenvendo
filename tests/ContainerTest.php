@@ -23,7 +23,7 @@ class Container extends TestCase
         $obj = new App\Container;
         $this->assertEquals(get_class($obj),"App\Container");
 
-        $obj->set(['stdClass::class'=>\stdClass::class]);
+        $obj->add(['stdClass::class'=>\stdClass::class]);
         $this->assertTrue($obj->has('stdClass::class'));
         $this->assertFalse($obj->has('\stdClass::class'));
         $this->assertFalse($obj->has('stdClass'));
@@ -49,9 +49,9 @@ class Container extends TestCase
         $obj = new App\Container;
         $this->assertEquals(get_class($obj),"App\Container");
 
-        $res = $obj->get(\App\Router::class);
-        $this->assertInstanceOf(\App\Router::class, $res);
-        $this->assertEquals(get_class($res),"App\Router");
+        $res = $obj->get(\App\Controller\Common::class);
+        $this->assertInstanceOf(\App\Controller\Common::class, $res);
+        $this->assertEquals(get_class($res),"App\Controller\Common");
 
         $res = $obj->get(\App\Http\Request::class);
         $this->assertInstanceOf(\App\Http\Request::class, $res);
