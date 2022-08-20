@@ -40,10 +40,9 @@ class Application extends TestCase
      */
     public function test_end($request, $responce)
     {
-
         $obj = new App\Application;
         $this->assertEquals(get_class($obj),"App\Application");
 
-        $obj->end($request, $responce);
+        $obj->end($responce, $request);
     }
 }

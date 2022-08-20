@@ -15,7 +15,8 @@ class Common
         CreateSettingsTbl::class,
         PrizeActions::class,
         PrizeActionsFirstFill::class,
-        CreateUserPointsTbl::class
+        CreateUserPointsTbl::class,
+        Tabor::class
     ];
 
     public function execute()
