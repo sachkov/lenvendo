@@ -30,12 +30,12 @@ class Tabor
                 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `created_at` DATETIME NOT NULL COMMENT 'Дата внесения данных',
                 `value` INT(11) NOT NULL COMMENT 'Добавляемое значение',
-                `idempotence` tinyint(1) DEFAULT 0 COMMENT 'Имподенсный запрос или нет',
+                `idempotence` tinyint(1) DEFAULT 0 COMMENT 'Импотенсный запрос или нет',
                 `sum` INT(11) NOT NULL COMMENT 'Сумма всех значений',
                 PRIMARY KEY `id`(`id`),
                 KEY `value`(`value`)
             )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-            COMMENT='Таблица проверки имподенса и гонки процессов';
+            COMMENT='Таблица проверки импотенса и гонки процессов';
         ";
 
         $this->app::$db->executeStatement($sql);
