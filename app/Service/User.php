@@ -66,10 +66,5 @@ class User
 
         $_SESSION['user'] = $user;
         return $user;
-        // $backurl = '/';
-        // if(isset($request['backurl']) && $request['backurl']){
-        //     $backurl = strval($request['backurl']);
-        // }
-        // header('Location: '.$backurl, true, 301); die;
     }
 }

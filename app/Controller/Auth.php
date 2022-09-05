@@ -23,7 +23,13 @@ class Auth extends Common
      */
     protected function GET():Http\ResponseInterface
     {
-        $this->response->setTemplate('auth',[]);
+        $data = [];
+        $request = $this->request->get('request');
+        if(isset($request['backurl']) && $request['backurl']){
+            $data['backurl'] = $request['backurl'];
+        }
+
+        $this->response->setTemplate('auth',$data);
 
         return $this->response;
     }
@@ -39,12 +45,16 @@ class Auth extends Common
 
         //При получении пользователя, запрос надо редиректить на backurl или на Referer(header),
         // если они оба не указаны то на главную страницу
-
-        //После logout необходимо редиректить на главную
+        
 
         $template = 'auth';
         if(empty($login) || $login['id']){
             $template = 'index';
+            // if(isset($request['backurl']) && $request['backurl']){
+            //     header('Request Method: GET');
+            //     header('Location: '.$request['backurl'], false, 307);
+            //     die;
+            // }
         }
 
         $data = [

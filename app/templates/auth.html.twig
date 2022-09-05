@@ -23,6 +23,13 @@
                     {% if user.error %}{{user.error}}{% endif %}
                 </div>
             </div>
+
+            {% if backurl %}
+
+            <input type='hidden' name="backurl" value="{{backurl}}">
+            
+            {% endif %}
+            
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

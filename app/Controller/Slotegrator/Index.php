@@ -7,7 +7,7 @@ use App\Controller;
 
 class Index extends Controller\Common
 {
-    protected $middlewareCommon = ['auth'];
+    protected $middlewareCommon = ['auth', 'auth_req'];
 
     protected $drawing;
     protected $user;
